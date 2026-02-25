@@ -1,0 +1,20 @@
+[project]
+name = "timbre-qualifier-SMC"
+authors = [{ name = "Théo CHASLE CAUCHY", email = "theo.chasle-cauchy@ls2n.fr" }]
+version = "1.0.0"
+description = "Repository corresponding to the article 'Timbre Trait Prediction for Performance Analysis of Musical Sound Synthesizer using Deep Neural Embeddings'."
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "transformers==4.48.3",
+    "torch",
+    "librosa",
+    "pandas",
+    "matplotlib",
+    "plotly",
+    "kaleido",
+    "fadtk",
+    "tokensynth",
+    "audiofile",
+    "mido",
+]
