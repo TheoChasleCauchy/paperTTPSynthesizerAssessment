@@ -8,13 +8,14 @@ requires-python = ">=3.11,<3.12"
 dependencies = [
     "transformers==4.48.3",
     "torch",
-    "librosa",
     "pandas",
     "matplotlib",
     "plotly",
     "kaleido",
     "fadtk",
     "tokensynth",
+    "librosa",
     "audiofile",
+    "soundfile",
     "mido",
 ]

@@ -89,3 +89,20 @@ Results are saved in the `./results/` directory:
 - `timbre-model/metrics/`: Cross-validation predictions and metrics.
 - `timbre-model/figures/`: Generated figures.
 - `synth/metrics/`: Synthesizer assessment predictions and metrics.
+
+## Citation
+If you use this code, please cite our paper:
+```bibtex
+@article{chaslecauchy2026timbre,
+  title={Timbre Trait Prediction for Performance Analysis of Musical Sound Synthesizer using Deep Neural Embeddings},
+  author={Chasle Cauchy, Théo et al.},
+  journal={Journal of Sound and Music Computing},
+  year={2026}
+}
+```
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contact
+For questions or issues, please open a GitHub issue or contact theo.chasle-cauchy@ls2n.fr.
