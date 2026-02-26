@@ -1,5 +1,3 @@
-import argparse
-import logging
 import pandas as pd
 import os
 import librosa
@@ -7,11 +5,8 @@ import numpy as np
 import soundfile as sf
 import re
 
-def setup_logging(log_file):
-    logging.basicConfig(filename=log_file, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-dataset_dir = ".data/RWC/RWC-I/"
-output_base_dir = "./RWC-preprocessed/"
+dataset_dir = "data/RWC/RWC-I/"
+output_base_dir = "data/RWC/RWC-preprocessed/"
 
 NOTE_OFFSETS = {
     'C': 0,
@@ -156,7 +151,7 @@ def safe_semitone_range(min_note, max_note):
 
 ################# MAIN #################
 
-def main():
+def preprocess_RWC():
     file_path = os.path.join(dataset_dir, "02_instruments_details_en.csv")
 
     df = pd.read_csv(file_path, sep=",")
@@ -330,9 +325,3 @@ def main():
     note_counts = df_notes["Instrument name"].value_counts()
 
     print(note_counts)
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="RPreprocess the RWC dataset by splitting studied instruments scales recordings into individual notes.")
-    args = parser.parse_args()
-
-    main()

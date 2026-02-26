@@ -8,6 +8,7 @@ requires-python = ">=3.11,<3.12"
 dependencies = [
     "transformers==4.48.3",
     "torch",
+    "tqdm",
     "pandas",
     "matplotlib",
     "plotly",

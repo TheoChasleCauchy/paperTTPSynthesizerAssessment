@@ -33,11 +33,26 @@ Download the [RWC Dataset](https://zenodo.org/records/17170844) and place it in 
 
 ## Experiments
 
-1. Preprocess the RWC samples:
+1. Process the RWC samples:
     ```bash
-    python ./data/RWC/preprocess_RWC.py --your_RWC_dataset_path
+    python ./process_RWC/process_RWC.py
     ```
-    This will split the RWC audio files into single notes samples available in `./data/RWC/RWC_preprocessed/`, then compute the embeddings (CLAP, CLAP Music, VGGish and MERT) and save them in `./data/embeddings/`.
+    This will launch the process pipeline of RWC, split the RWC audio files into single notes samples available in `./data/RWC/RWC_processed/`, then compute the embeddings (CLAP, CLAP Music, VGGish and MERT) and save them in `./data/embeddings/`.
+    
+    **Pipeline**:
+    - Split of the RWC audio files into single notes samples available in `./data/RWC/RWC_processed/`
+    - Creation of a metadata CSV file of the RWC samples saved in `./data/RWC/metadata/`
+    - Computation of the embeddings (CLAP, CLAP Music, VGGish and MERT) and save them in `./data/RWC/embeddings/`
+    - Creation of a metadata CSV file of the RWC embeddings saved in `./data/RWC/metadata/`
+    - Creation of a train-valid split (Two distinct CSV files) depending on the split in split_config.yaml.
+    
+        NB: If you want to change the split, use :
+        ```bash
+        python ./process_RWC/change_split.py # If you want to specify yourself the split in split_change.yaml
+        python ./process_RWC/change_split.py -r # If you want to randomly change thesplit in split_change.yaml
+        python ./process_RWC/change_split.py -r --train_proportion # If you want specify the train split proportion (default 0.8)
+        python ./process_RWC/change_split.py -r --random_seed # If you want specify the random seed (default 1) 
+        ```
 
 2. Launch the timbre-model pipeline to train the models
     ```bash
