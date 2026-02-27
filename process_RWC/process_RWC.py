@@ -1,4 +1,4 @@
-from preprocess_rwc import preprocess_RWC
+from preprocess_RWC import preprocess_RWC
 from create_RWC_metadata import create_RWC_metadata
 from create_embeddings_metadata import create_embeddings_metadata
 from compute_split_metadata import split_metadata

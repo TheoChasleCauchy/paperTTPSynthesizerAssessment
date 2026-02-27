@@ -24,6 +24,6 @@ def create_RWC_metadata():
 
     # Convert metadata to a dataframe to save it as a CSV file
     metadata_df = pd.DataFrame(metadata)
-    metadata_path = "data/RWC/metadata"
+    metadata_path = "data/metadata/RWC"
     os.path.exists(metadata_path) or os.makedirs(metadata_path)
     metadata_df.to_csv(os.path.join(metadata_path, "RWC_metadata.csv"), index=False)

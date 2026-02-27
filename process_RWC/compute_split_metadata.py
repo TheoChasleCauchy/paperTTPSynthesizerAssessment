@@ -35,7 +35,7 @@ def random_split(proportion=0.8, random_seed=1):
         "valid_indices": valid_indices,
     }
 
-    with open("split_config.yaml", "w") as f:
+    with open("data/metadata/split_config.yaml", "w") as f:
         yaml.dump(split_config, f)
 
     print(f"Split indices saved to 'split_config.yaml'.")
@@ -54,7 +54,7 @@ def split_metadata():
         valid_indices = split_config["valid_indices"]
 
         # Load metadata CSV file
-        csv_path = f"data/RWC/metadata/{embeddings_type}/{embeddings_type}_embeddings_labels.csv"
+        csv_path = f"data/RWC/metadata/{embedding_type}/{embedding_type}_embeddings_labels.csv"
         df = pd.read_csv(csv_path)
 
         # Split the data
@@ -62,10 +62,10 @@ def split_metadata():
         valid_df = df.iloc[valid_indices]
 
         # Save the results
-        train_df.to_csv(f"data/RWC/metadata/{embeddings_type}/train_{embeddings_type}.csv", index=False)
-        valid_df.to_csv(f"data/RWC/metadata/{embeddings_type}/valid_{embeddings_type}.csv", index=False)
+        train_df.to_csv(f"data/metadata/RWC/{embedding_type}/train_{embedding_type}.csv", index=False)
+        valid_df.to_csv(f"data/metadata/RWC/{embedding_type}/valid_{embedding_type}.csv", index=False)
 
-        print(f"Train and validation sets saved as 'data/RWC/metadata/{embeddings_type}/train_{embeddings_type}.csv' and 'data/RWC/metadata/{embeddings_type}/valid_{embeddings_type}.csv'.")
+        print(f"Train and validation sets saved as 'data/metadata/RWC/{embedding_type}/train_{embedding_type}.csv' and 'data/metadata/RWC/{embedding_type}/valid_{embedding_type}.csv'.")
 
 
 ############ MAIN ############
