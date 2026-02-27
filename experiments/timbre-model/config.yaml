@@ -1,6 +1,8 @@
 embeddings_type: ["clap", "clap-music", "vggish", "mert"]
-model_hidden_layers: [
-  [],
-  [256],
-  [256, 128]
-]
+model_hidden_layers: 
+- []
+- [256]
+- [256, 128]
+learning_rate: 0.001
+batch_size: 64
+patience: 20

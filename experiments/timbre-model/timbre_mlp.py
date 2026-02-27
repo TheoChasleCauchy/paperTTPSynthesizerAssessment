@@ -48,43 +48,22 @@ class TimbreMLP(nn.Module):
 
     def train_model(
         self,
-        dataloader: DataLoader,
+        train_dataloader: DataLoader,
+        valid_dataloader: DataLoader = None,
         epochs: int = 100,
         learning_rate: float = 0.001,
         loss_fn=nn.MSELoss(),  # Default: MSE for regression
         optimizer_class=optim.Adam,
         plot_loss: bool = True,
         patience: int = 10,  # Number of epochs to wait before stopping
-        test_size: float = 0.2,  # 20% for testing
         lr_scheduler_factor: float = 0.3,  # Factor by which the learning rate will be reduced
         lr_scheduler_patience: int = 5,  # Number of epochs with no improvement after which learning rate will be reduced
-        eval_with_test: bool = False,
-        test_dataloader: DataLoader = None,
-        dataset_seed: int = None,
-        add_label_noise: bool = False,
-        label_noise_std: float = 0.1/6,
     ):
-        if test_dataloader is None:
-            # Split dataset into train and test
-            dataset = dataloader.dataset
-            train_size = int((1 - test_size) * len(dataset))
-            test_size = len(dataset) - train_size
-            if dataset_seed is None:
-                generator = torch.Generator(device="cpu").manual_seed(dataset_seed)
-                train_dataset, test_dataset = random_split(dataset, [train_size, test_size], generator=generator)
-            else:
-                train_dataset, test_dataset = random_split(dataset, [train_size, test_size])
-
-            # Create dataloaders
-            train_dataloader = DataLoader(train_dataset, batch_size=dataloader.batch_size, shuffle=True)
-            test_dataloader = DataLoader(test_dataset, batch_size=dataloader.batch_size, shuffle=False)
-        else:
-            train_dataloader = dataloader
 
         optimizer = optimizer_class(self.parameters(), lr=learning_rate)
         train_loss_history = [float('inf')]
-        test_loss_history = [float('inf')]
-        best_test_loss = float('inf')
+        valid_loss_history = [float('inf')]
+        best_valid_loss = float('inf')
         epochs_no_improve = 0
         best_model_state = None
         best_epoch = 0
@@ -105,8 +84,6 @@ class TimbreMLP(nn.Module):
             train_epoch_loss = 0.0
             for batch_X, batch_y in tqdm(train_dataloader, desc=f"Training - Epoch {epoch+1}/{epochs}, train_loss: {train_loss_history[-1]:.4f}"):
                 batch_X, batch_y = batch_X.to(self.device), batch_y.to(self.device)
-                if add_label_noise:
-                    batch_y = batch_y + torch.randn_like(batch_y) * label_noise_std
                 optimizer.zero_grad()
                 outputs = self(batch_X)
                 loss = loss_fn(outputs, batch_y)
@@ -116,25 +93,25 @@ class TimbreMLP(nn.Module):
             train_epoch_loss /= len(train_dataloader)
             train_loss_history.append(train_epoch_loss)
 
-            # Testing phase
+            # validing phase
             self.eval()
-            test_epoch_loss = 0.0
+            valid_epoch_loss = 0.0
             with torch.no_grad():
-                for batch_X, batch_y in test_dataloader:
+                for batch_X, batch_y in valid_dataloader:
                     batch_X, batch_y = batch_X.to(self.device), batch_y.to(self.device)
                     outputs = self(batch_X)
                     loss = loss_fn(outputs, batch_y)
-                    test_epoch_loss += loss.item()
-            test_epoch_loss /= len(test_dataloader)
-            test_loss_history.append(test_epoch_loss)
+                    valid_epoch_loss += loss.item()
+            valid_epoch_loss /= len(valid_dataloader)
+            valid_loss_history.append(valid_epoch_loss)
 
             # Step the learning rate scheduler
-            scheduler.step(test_epoch_loss)
+            scheduler.step(valid_epoch_loss)
             lr_history.append(optimizer.param_groups[0]['lr'])  # Track learning rate
 
             # Early stopping and best model saving logic
-            if test_epoch_loss < best_test_loss:
-                best_test_loss = test_epoch_loss
+            if valid_epoch_loss < best_valid_loss:
+                best_valid_loss = valid_epoch_loss
                 epochs_no_improve = 0
                 best_model_state = self.state_dict()  # Save the best model state
                 best_epoch = epoch + 1  # Track the best epoch
@@ -152,17 +129,10 @@ class TimbreMLP(nn.Module):
             # Truncate loss history to only include up to the best epoch
             self.plot_loss_curve(
                 train_loss_history[:best_epoch],
-                test_loss_history[:best_epoch]
+                valid_loss_history[:best_epoch]
             )
             # Plot learning rate curve
             self.plot_learning_rate_curve(lr_history[:best_epoch])
-
-        if eval_with_test:
-            import plots
-            eval_loss, predicted_values = self.evaluate_model(test_dataloader)
-            predictions = {}
-            predictions["snare-drum"] = predicted_values
-            plots.plot_radar_chart("snare-drum", predictions, save_path=f"./models/test/_excluded_instrument_{"snare-drum"}/metrics/cross_validation_predictions.png")
 
         # Save the model
         self.save_model()
@@ -185,11 +155,11 @@ class TimbreMLP(nn.Module):
         torch.save(self.state_dict(), model_path)
         print(f"Model saved to {model_path}")
 
-    def plot_loss_curve(self, train_loss_history: list, test_loss_history: list):
+    def plot_loss_curve(self, train_loss_history: list, valid_loss_history: list):
         """Plot the training loss curve."""
         plt.figure(figsize=(10, 5))
         plt.plot(train_loss_history[1:], label='Training Loss')
-        plt.plot(test_loss_history[1:], label='Test Loss')
+        plt.plot(valid_loss_history[1:], label='valid Loss')
         plt.title('Training Loss Curve')
         plt.xlabel('Epoch')
         plt.ylabel('Loss')
@@ -204,7 +174,7 @@ class TimbreMLP(nn.Module):
         eval_dataloader: DataLoader,
         loss_fn=nn.MSELoss(),
         verbose: bool = False
-    ) -> tuple[float, torch.Tensor]:
+    ) -> tuple[float, torch.Tensor, float]:
         """
         Evaluate the MLP model on validation/test data.
 

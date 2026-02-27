@@ -70,7 +70,6 @@ Download the [RWC Dataset](https://zenodo.org/records/17170844) and place it in 
     This will launch the training of all the models considering the parameters in `./experiments/timbre-model/config.yaml` and will generate the results files and figures in the `./results` folder.
     
     **Pipeline**:
-    - Compute a random train-valid split of the dataset
     - Train each model with a cross-validation approach, saved in `./models/cross-validation/`
     - Compute the cross-validation predictions and metrics, saved in `./results/timbre-model/metrics/`
     - Generation of figures, saved in `./results/timbre-model/figures/`
