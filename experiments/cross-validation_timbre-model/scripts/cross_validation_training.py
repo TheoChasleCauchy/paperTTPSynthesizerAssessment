@@ -1,9 +1,7 @@
 from tqdm import tqdm
 import pandas as pd
-import torch
 import yaml
 import os
-import plots
 
 from samples_dataset import SamplesDataset
 from timbre_mlp import TimbreMLP
@@ -40,7 +38,7 @@ def train_model(embeddings_type, hidden_layers, learning_rate, batch_size, patie
 
     output_size = 20 # 20 timber traits
 
-    model_save_folder = f"./models/timbre_model_{embeddings_type}_{hidden_layer_suffix}/"
+    model_save_folder = f"./models/cross-validation_timbre-model/timbre_model_{embeddings_type}_{hidden_layer_suffix}/"
 
     for excluded_instrument in tqdm(instruments_names, total=len(instruments_names), desc=f"Training models for {embeddings_type} embeddings, {len(hidden_layers)} hidden layers"):
         # Cross-Validation: For each instrument one model is trained without its samples, and we evaluate the model on these samples
