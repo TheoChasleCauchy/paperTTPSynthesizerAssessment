@@ -12,7 +12,6 @@ np.random.seed(seed)
 torch.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
 
-
 def main():
     CMTTP()
     train_all_models()

@@ -1,2 +1,6 @@
 embeddings_type: "clap"
 model_hidden_layers: []
+learning_rate: 0.01
+batch_size: 64
+patience: 20
+epochs: 500

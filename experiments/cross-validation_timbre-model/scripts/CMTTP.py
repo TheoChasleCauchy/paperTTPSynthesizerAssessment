@@ -50,6 +50,7 @@ def CMTTP():
                 trait_embedding = torch.load(f"data/CMTTP/timber_traits_embeddings/{trait}.pt", weights_only=True).to(device)
                 distance = torch.norm(sample_embedding - trait_embedding).item()
                 samples_traits_distances_df.loc[samples_traits_distances_df["Path"] == row["Path"], trait] = distance
+    os.makedirs("models/cross-validation_timbre-model/CMTTP", exist_ok=True)
     samples_traits_distances_df.to_csv("models/cross-validation_timbre-model/CMTTP/samples_timber_traits_distances.csv", index=False)
 
     # Normalize all distances by the max distance of the dataframe

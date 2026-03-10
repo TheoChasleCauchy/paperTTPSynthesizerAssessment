@@ -6,19 +6,19 @@ description = "Repository corresponding to the article 'Timbre Trait Prediction 
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
 dependencies = [
-    "transformers==4.48.3",
+    "audiofile",
+    "fadtk",
+    "kaleido",
+    "librosa",
+    "matplotlib",
+    "mido",
+    "pandas",
+    "plotly",
+    "soundfile",
+    "tokensynth",
     "torch",
     "tqdm",
-    "pandas",
-    "matplotlib",
-    "plotly",
-    "kaleido",
-    "fadtk",
-    "tokensynth",
-    "librosa",
-    "audiofile",
-    "soundfile",
-    "mido",
+    "transformers==4.48.3",
 ]
 
 [tool.setuptools.packages.find]
