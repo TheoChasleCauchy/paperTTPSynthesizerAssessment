@@ -26,11 +26,13 @@ def main():
     patience = config["patience"]
     epochs = config["epochs"]
 
-    train_model(embeddings_type, hidden_layers, learning_rate, batch_size, patience, epochs)
-    compute_mean_embeddings()
-    create_midi_files()
-    synthesize_all(seed, embeddings_type)
-    compute_embeddings(embeddings_type)
+    # train_model(embeddings_type, hidden_layers, learning_rate, batch_size, patience, epochs)
+    # compute_mean_embeddings()
+    # create_midi_files()
+    synthesize_all(seed)
+    ##### Compute metadata
+    # compute_embeddings(embeddings_type)
+    #### COmpute predictions, metrics and figures
 
 if __name__ == "__main__":
     main()

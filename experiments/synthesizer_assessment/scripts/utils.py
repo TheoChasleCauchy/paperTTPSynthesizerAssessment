@@ -91,7 +91,7 @@ def midi_to_note(midi_number: int) -> str:
 def get_midi_range_from_sample(sample_name: str) -> tuple[int, int]:
     """Return the MIDI range (min, max) for a given sample name."""
     # Get the metadata csv file
-    instrument_metadata = pd.read_csv("resources/02_instruments_details_en.csv")
+    instrument_metadata = pd.read_csv("data/RWC/RWC-I/02_instruments_details_en.csv")
 
     # Get the last char before ".wav" in sample_name:
     sample_name = sample_name.replace(".wav", "")
@@ -138,7 +138,7 @@ def get_midi_range_from_instrument(instrument: str) -> tuple[int, int]:
         return (64,64)
 
     # Get the metadata csv file
-    instrument_metadata = pd.read_csv("resources/02_instruments_details_en.csv")
+    instrument_metadata = pd.read_csv("data/RWC/RWC-I/02_instruments_details_en.csv")
 
     min_midis = []
     max_midis = []

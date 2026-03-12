@@ -10,7 +10,7 @@ def compute_mean_embeddings():
     clap = CLAP(device=device)
 
     metadata_path = "data/metadata/RWC/RWC_metadata.csv"
-    audios_path = "data/RWC/RWC-preprocessed/Dataset/"
+    audios_path = "data/RWC/RWC-preprocessed/"
     embeddings_path = f"data/RWC/mean_clap_embeddings/"
     os.path.exists(embeddings_path) or os.makedirs(embeddings_path, exist_ok=True)
 

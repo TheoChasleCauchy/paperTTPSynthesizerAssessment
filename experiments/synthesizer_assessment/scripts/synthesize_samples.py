@@ -4,8 +4,6 @@ import torch
 import pandas as pd
 from tqdm import tqdm
 import os
-
-import yaml
 from utils import get_midi_range_from_instrument, instruments_caps_locked_prompts, midi_to_note
 
 def synthesize_audios(condition_type: str, seed: int):
@@ -81,13 +79,7 @@ def synthesize_audios(condition_type: str, seed: int):
             audiofile.write(output_file, audio_audio.cpu().numpy(), 16000)
 
 def synthesize_all(seed: int):
-    # Load config.yaml
-    with open("experiments/synthesizer_assessment/config.yaml", "r") as f:
-        config = yaml.safe_load(f)
-
-    embeddings_type = config["embeddings_type"]
-    embeddings_type = embeddings_type + "_embeddings"
     
-    synthesize_audios("text", embeddings_type, seed)
-    synthesize_audios("audio", embeddings_type, seed)
-    synthesize_audios("text_audio", embeddings_type, seed)
+    synthesize_audios("text", seed)
+    synthesize_audios("audio", seed)
+    synthesize_audios("text_audio", seed)

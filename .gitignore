@@ -1,6 +1,7 @@
 data/RWC/
 data/metadata/RWC
 data/CMTTP
+data/TokenSynth
 models
 experiments/cross-validation_timbre_model/results
 experiments/synthesizer_assessment/results

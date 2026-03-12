@@ -18,7 +18,7 @@ def compute_embeddings(embeddings_type: str):
             file_name = file_name.replace('.wav', '')
             save_paths.append(f"{file_name}_embedding.pt")
 
-        save_dir = f"data/TokenSynth/Embeddings/{condition_type}_conditioned/{embeddings_type}_embeddings/"
+        save_dir = f"data/TokenSynth/Embeddings/{condition_type}_conditioned_synthesis/{embeddings_type}_embeddings/"
         os.path.exists(save_dir) or os.makedirs(save_dir, exist_ok=True)
         atc = atct.Audio_to_Embedding_Tensor(embedding_type=embeddings_type)
         audios = atc.load_all_audios(samples_paths, crop_to_duration=5.0, pad_to_duration=5.0)
