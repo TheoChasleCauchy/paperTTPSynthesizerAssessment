@@ -62,7 +62,11 @@
         <h2>TokenSynth Assessment using TTP-RANE</h2>
         <h3>Synthesized Wood Block assessment</h3>
         <p>We start the analysis of the synthesis by observing the predicted TTP of the instrument with the highest MAE, here, the wood block.</p>
-        <img src="data/audio_examples/WOOD_BLOCK_radar.jpg" alt="Radar plots of TTP for Wood Block with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized wood block samples (Blue); Predicted TTP of the sample with highest difference between 'percussive' prediction and ground truth (Red)." style="width: 300px; height: auto;">
+        
+        <figure style="display: block; margin: 0 auto; text-align: center;">
+            <img src="data/audio_examples/WOOD_BLOCK_radar.jpg" alt="Radar plots of TTP for Wood Block with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized wood block samples (Blue); Predicted TTP of the sample with highest difference between 'percussive' prediction and ground truth (Red)." style="width: 600px; height: auto;">
+            <figcaption>Radar plots of TTP for Wood Block with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized wood block samples (Blue); Predicted TTP of the sample with highest difference between 'percussive' prediction and ground truth (Red)..</figcaption>
+        </figure>
 
         <p>We observe on the wood block averaged predicted TTP that the timbre traits with the highest errors are 'woody' and 'percussive'. While 'woody' can hardly be assessed on a spectrogram, we can make observations with respect to the 'percussive' trait.</p>
 
@@ -73,14 +77,20 @@
                     <source src="data/audio_examples/WOOD BLOCK_ground_truth_nearest_neighbor_trait_percussive_dist_0.01_411WBNO3_03.wav" type="audio/mpeg">
                     Your browser does not support the audio element.
                 </audio>
-                <img src="data/audio_examples/WOOD_BLOCK_ground_truth_nearest_neighbor_trait_percussive_dist_0.01_411WBNO3_03.jpg" alt="RWC wood block sample with the lowest difference between predicted 'percussive' value and ground truth.">
+                <figure>
+                    <img src="data/audio_examples/WOOD_BLOCK_ground_truth_nearest_neighbor_trait_percussive_dist_0.01_411WBNO3_03.jpg" alt="RWC wood block sample with the lowest difference between predicted 'percussive' value and ground truth.">
+                    <figcaption>RWC wood block sample with the lowest difference between predicted 'percussive' value and ground truth.</figcaption>
+                </figure>
             </div>
             <div class="sound-image">
                 <audio controls>
                     <source src="data/audio_examples/WOOD BLOCK_ground_truth_furthest_neighbor_trait_percussive_dist_0.61_sample_95_note_E4.wav" type="audio/mpeg">
                     Your browser does not support the audio element.
                 </audio>
-                <img src="data/audio_examples/WOOD_BLOCK_ground_truth_furthest_neighbor_trait_percussive_dist_0.61_sample_95_note_E4.jpg" alt="Synthesized wood block sample with the highest difference between predicted 'percussive' value and ground truth">
+                <figure>
+                    <img src="data/audio_examples/WOOD_BLOCK_ground_truth_furthest_neighbor_trait_percussive_dist_0.61_sample_95_note_E4.jpg" alt="Synthesized wood block sample with the highest difference between predicted 'percussive' value and ground truth">
+                    <figcaption>Synthesized wood block sample with the highest difference between predicted 'percussive' value and ground truth.</figcaption>
+                </figure>
             </div>
         </div>
 
@@ -92,8 +102,11 @@
           We can also analyze more subtle defects by observing any timber trait of a any instrument. For instance, we can analyze the 'resonant/vibrant' trait of the cello.
           The 'resonant/vibrant' ground truth value is 0.865, the highest value for this trait in the 31 instruments considered here, suggesting it is an essential timbral quality for the cello.
         </p>
-        <img src="data/audio_examples/CELLO_radar.jpg" alt="Radar plots of TTP for Cello with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized cello samples (Blue); Predicted TTP of the sample with highest difference between 'resonant-vibrant' prediction and ground truth (Red)." style="width: 300px; height: auto;">
-
+        <figure style="display: block; margin: 0 auto; text-align: center;">
+            <img src="data/audio_examples/CELLO_radar.jpg" alt="Radar plots of TTP for Cello with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized cello samples (Blue); Predicted TTP of the sample with highest difference between 'resonant-vibrant' prediction and ground truth (Red)." style="width: 300px; height: auto;">
+            <figcaption>Radar plots of TTP for Cello with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized cello samples (Blue); Predicted TTP of the sample with highest difference between 'resonant-vibrant' prediction and ground truth (Red)..</figcaption>
+        </figure>
+        
         <!-- Double Audios Container 2 -->
         <div class="double-audios-container">
             <div class="sound-image">
@@ -101,14 +114,21 @@
                     <source src="data/audio_examples/CELLO_ground_truth_nearest_neighbor_trait_resonant-vibrant_dist_0.03_171VCNOF_64.wav" type="audio/mpeg">
                     Your browser does not support the audio element.
                 </audio>
-                <img src="data/audio_examples/CELLO_ground_truth_nearest_neighbor_trait_resonant-vibrant_dist_0.03_171VCNOF_64.jpg" alt="RWC cello sample with the lowest difference between predicted 'resonant-vibrant' value and ground truth.">
+                <figure>
+                    <img src="data/audio_examples/CELLO_ground_truth_nearest_neighbor_trait_resonant-vibrant_dist_0.03_171VCNOF_64.jpg" alt="RWC cello sample with the lowest difference between predicted 'resonant-vibrant' value and ground truth.">
+                    <figcaption>RWC cello sample with the lowest difference between predicted 'resonant-vibrant' value and ground truth.</figcaption>
+                </figure>
             </div>
             <div class="sound-image">
                 <audio controls>
                     <source src="data/audio_examples/CELLO_ground_truth_furthest_neighbor_trait_resonant-vibrant_dist_0.22_sample_35_note_G3.wav" type="audio/mpeg">
                     Your browser does not support the audio element.
                 </audio>
-                <img src="data/audio_examples/CELLO_ground_truth_furthest_neighbor_trait_resonant-vibrant_dist_0.22_sample_35_note_G3.jpg" alt="Synthesized cello sample with the highest difference between predicted 'resonant-vibrant' value and ground truth">
+                <figure>
+                    <img src="data/audio_examples/CELLO_ground_truth_furthest_neighbor_trait_resonant-vibrant_dist_0.22_sample_35_note_G3.jpg" alt="Synthesized cello sample with the highest difference between predicted 'resonant-vibrant' value and ground truth">
+                    <figcaption>Synthesized cello sample with the highest difference between predicted 'resonant-vibrant' value and ground truth.</figcaption>
+                </figure>
+                
             </div>
         </div>
         <p>The prediction of this trait for the synthesized sample is 0.66. The spectrogram of the RWC sample shows harmonics whose frequencies fluctuate slightly over time, plausibly creating a'vibrant' perceptual quality related to the pronounced vibrato in the sample. In contrast, the synthesized sample’s spectrogram lacks these frequency oscillations in its harmonics. This difference helps explain why the synthesized sample receives a lower prediction score for the 'resonant/vibrant' attribute.</p>
