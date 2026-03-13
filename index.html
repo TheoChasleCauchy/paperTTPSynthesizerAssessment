@@ -11,7 +11,7 @@
         .double-audios-container {
             display: flex;
             justify-content: space-around;
-            margin: 20px;
+            margin: 20px 0;
         }
         .sound-image {
             text-align: center;
@@ -25,125 +25,114 @@
             max-width: 100%;
             height: auto;
             border-radius: 5px;
+            margin: 10px 0;
         }
     </style>
 </head>
-
 <body>
 
-  <!-- Title and Authors -->
-  <div id="header" class="container text-center my-4">
-    <h1>Predicting Timbre Traits for Interpretable Assessment of Musical Sound Synthesizers</h1>
-    <p class="mt-3 mb-1"><strong>Théo Chasle Cauchy, Modan Tailleur, Lindsay Reymore, Fanny Roche, Mathieu Lagrange</strong></p>
-    <p>Contact: <a href="mailto:theo.chasle-cauchy@ls2n.fr">theo.chasle-cauchy@ls2n.fr</a></p>
-  </div>
-
-  <!-- Abstract -->
-  <div class="container">
-    <h2>Abstract</h2>
-    <p>
-      Quantitative assessment of neural audio synthesizers is now routinely conducted using distribution based metrics such as the Fréchet Audio Distance (FAD). Although this metric can be correlated with human perception, it offers limited interpretability beyond ranking different approaches. In this paper, we introduce a deep neural timbre trait predictor composed of a pretrained audio neural embedding CLAP, and a shallow learnable component. The latter is trained using the RWC musical instrument database and human judgments of 20 timbre descriptions (e.g., woody, percussive, rumbling, etc.) for 31 instruments. The resulting model shows strong correlation with average human ratings (r = 0.74, p < 0.001). 
-      We then demonstrate the benefit of this predictor for evaluating the performance of TokenSynth, a neural sound synthesizer. First, the MAE computed over the set of generated sounds under different conditioning modalities of the model provides the same ranking as a FAD computed with the RWC database as a reference, suggesting that the proposed predictors are able to provide equivalent information on a distributional basis. Second, because the model is able to qualitatively analyze isolated sounds, we can determine which generated sounds could be improved and identify specific timbral dimensions that need adjustment.
-    </p>
-    <p>This is the companion page for the paper: Predicting Timbre Traits for Interpretable Assessment of Musical Sound Synthesizers</p>
-    <pre>Please, cite as:
+    <!-- Title and Authors -->
+    <div id="header" class="container text-center my-4">
+      <h1>Predicting Timbre Traits for Interpretable Assessment of Musical Sound Synthesizers</h1>
+      <p class="mt-3 mb-1"><strong>Théo Chasle Cauchy, Modan Tailleur, Lindsay Reymore, Fanny Roche, Mathieu Lagrange</strong></p>
+      <p>Contact: <a href="mailto:theo.chasle-cauchy@ls2n.fr">theo.chasle-cauchy@ls2n.fr</a></p>
+    </div>
+    
+    <!-- Abstract -->
+    <div class="container">
+      <h2>Abstract</h2>
+      <p>
+        Quantitative assessment of neural audio synthesizers is now routinely conducted using distribution based metrics such as the Fréchet Audio Distance (FAD). Although this metric can be correlated with human perception, it offers limited interpretability beyond ranking different approaches. In this paper, we introduce a deep neural timbre trait predictor composed of a pretrained audio neural embedding CLAP, and a shallow learnable component. The latter is trained using the RWC musical instrument database and human judgments of 20 timbre descriptions (e.g., woody, percussive, rumbling, etc.) for 31 instruments. The resulting model shows strong correlation with average human ratings (r = 0.74, p < 0.001). 
+        We then demonstrate the benefit of this predictor for evaluating the performance of TokenSynth, a neural sound synthesizer. First, the MAE computed over the set of generated sounds under different conditioning modalities of the model provides the same ranking as a FAD computed with the RWC database as a reference, suggesting that the proposed predictors are able to provide equivalent information on a distributional basis. Second, because the model is able to qualitatively analyze isolated sounds, we can determine which generated sounds could be improved and identify specific timbral dimensions that need adjustment.
+      </p>
+      <p>This is the companion page for the paper: Predicting Timbre Traits for Interpretable Assessment of Musical Sound Synthesizers</p>
+      <pre>Please, cite as:
 @conference{chaslecauchy2026timbre,
     title={Timbre Trait Prediction for Performance Analysis of Musical Sound Synthesizer using Deep Neural Embeddings},
     author={Chasle Cauchy, Théo et al.},
     booktitle={Sound and Music Computing (SMC)},
     year={2026}
 }
-    </pre>
-    <p>Experience code is available in <a href="https://github.com/TheoChasleCauchy/timbre-qualifier-SMC">this GitHub repository</a>.</p>
-
-  </div>
-
-  <!-- Synthesizer Assessment -->
-  <div class="container mt-5" id="table_techniques">
-    <h2>TokenSynth Assessment using TTP-RANE</h2>
-    <h3>Synthesized Wood Block assessment</h3>
-    <p>We start the analysis of the synthesis by observing the predicted TTP of the instrument with the highest MAE, here, the wood block.</p>
-
-    <div>
-      <img src="data/audio_examples/WOOD_BLOCK_radar.jpg" alt="Radar plots of TTP for Wood Block with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized wood block samples (Blue); Predicted TTP of the sample with highest difference between 'percussive' prediction and ground truth (Red).">
+      </pre>
+      <p>Experience code is available in <a href="https://github.com/TheoChasleCauchy/timbre-qualifier-SMC">this GitHub repository</a>.</p>
     </div>
-    <p>We observe on the wood block averaged predicted TTP that the timbre traits with the highest errors are 'woody' and 'percussive'. While 'woody' can hardly be assessed on a spectrogram, we can make observations with respect to the 'percussive' trait.</p>
-    <!-- First Sound and Image -->
-    <div class="double-audios-container">
-        <div class="sound-image">
-            <audio controls>
-                <source src="data/audio_examples/WOOD BLOCK_ground_truth_nearest_neighbor_trait_percussive_dist_0.01_411WBNO3_03.wav" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-            <div>
-            <img src="data/audio_examples/WOOD_BLOCK_ground_truth_nearest_neighbor_trait_percussive_dist_0.01_411WBNO3_03.jpg" alt="RWC wood block sample with the lowest difference between predicted 'percussive' value and ground truth.">
+    
+    <div class="container">
+        <!-- Section 1 -->
+        <h2>TokenSynth Assessment using TTP-RANE</h2>
+        <h3>Synthesized Wood Block assessment</h3>
+        <p>We start the analysis of the synthesis by observing the predicted TTP of the instrument with the highest MAE, here, the wood block.</p>
+        <img src="data/audio_examples/WOOD_BLOCK_radar.jpg" alt="Radar plots of TTP for Wood Block with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized wood block samples (Blue); Predicted TTP of the sample with highest difference between 'percussive' prediction and ground truth (Red).">
+
+        <p>We observe on the wood block averaged predicted TTP that the timbre traits with the highest errors are 'woody' and 'percussive'. While 'woody' can hardly be assessed on a spectrogram, we can make observations with respect to the 'percussive' trait.</p>
+
+        <!-- Double Audios Container 1 -->
+        <div class="double-audios-container">
+            <div class="sound-image">
+                <audio controls>
+                    <source src="data/audio_examples/WOOD BLOCK_ground_truth_nearest_neighbor_trait_percussive_dist_0.01_411WBNO3_03.wav" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <img src="data/audio_examples/WOOD_BLOCK_ground_truth_nearest_neighbor_trait_percussive_dist_0.01_411WBNO3_03.jpg" alt="RWC wood block sample with the lowest difference between predicted 'percussive' value and ground truth.">
+            </div>
+            <div class="sound-image">
+                <audio controls>
+                    <source src="data/audio_examples/WOOD BLOCK_ground_truth_furthest_neighbor_trait_percussive_dist_0.61_sample_95_note_E4.wav" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <img src="data/audio_examples/WOOD_BLOCK_ground_truth_furthest_neighbor_trait_percussive_dist_0.61_sample_95_note_E4.jpg" alt="Synthesized wood block sample with the highest difference between predicted 'percussive' value and ground truth">
+            </div>
         </div>
-    </div>
 
-    <!-- Second Sound and Image -->
-    <div class="sound-image">
-        <audio controls>
-            <source src="data/audio_examples/WOOD BLOCK_ground_truth_furthest_neighbor_trait_percussive_dist_0.61_sample_95_note_E4.wav" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-        <div>
-            <img src="data/audio_examples/WOOD_BLOCK_ground_truth_furthest_neighbor_trait_percussive_dist_0.61_sample_95_note_E4.jpg" alt="Synthesized wood block sample with the highest difference between predicted 'percussive' value and ground truth">
+        <p>The wood block is a percussive instrument, so its ground truth value of the 'percussive' trait is about 0.93. The prediction of this trait for the synthesized sample is 0.32. We can observe on the spectrograms that the synthesized sample is sustained, contrary to the RWC sample, which decays quickly after impact. This explains why its 'percussive' trait prediction is far below the ground truth.</p>
+
+        <!-- Section 2 -->
+        <h3>Synthesized Cello assessment</h3>
+        <p>
+          We can also analyze more subtle defects by observing any timber trait of a any instrument. For instance, we can analyze the 'resonant/vibrant' trait of the cello.
+          The 'resonant/vibrant' ground truth value is 0.865, the highest value for this trait in the 31 instruments considered here, suggesting it is an essential timbral quality for the cello.
+        </p>
+        <img src="data/audio_examples/CELLO_radar.jpg" alt="Radar plots of TTP for Cello with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized cello samples (Blue); Predicted TTP of the sample with highest difference between 'resonant-vibrant' prediction and ground truth (Red).">
+
+        <!-- Double Audios Container 2 -->
+        <div class="double-audios-container">
+            <div class="sound-image">
+                <audio controls>
+                    <source src="data/audio_examples/CELLO_ground_truth_nearest_neighbor_trait_resonant-vibrant_dist_0.03_171VCNOF_64.wav" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <img src="data/audio_examples/CELLO_ground_truth_nearest_neighbor_trait_resonant-vibrant_dist_0.03_171VCNOF_64.jpg" alt="RWC cello sample with the lowest difference between predicted 'resonant-vibrant' value and ground truth.">
+            </div>
+            <div class="sound-image">
+                <audio controls>
+                    <source src="data/audio_examples/CELLO_ground_truth_furthest_neighbor_trait_resonant-vibrant_dist_0.22_sample_35_note_G3.wav" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <img src="data/audio_examples/CELLO_ground_truth_furthest_neighbor_trait_resonant-vibrant_dist_0.22_sample_35_note_G3.jpg" alt="Synthesized cello sample with the highest difference between predicted 'resonant-vibrant' value and ground truth">
+            </div>
         </div>
+        <p>The prediction of this trait for the synthesized sample is 0.66. The spectrogram of the RWC sample shows harmonics whose frequencies fluctuate slightly over time, plausibly creating a'vibrant' perceptual quality related to the pronounced vibrato in the sample. In contrast, the synthesized sample’s spectrogram lacks these frequency oscillations in its harmonics. This difference helps explain why the synthesized sample receives a lower prediction score for the 'resonant/vibrant' attribute.</p>
     </div>
-
-    <p>The wood block is a percussive instrument, so its ground truth value of the 'percussive' trait is about 0.93. The prediction of this trait for the synthesized sample is 0.32. We can observe on the spectrograms that the synthesized sample is sustained, contrary to the RWC sample, which decays quickly after impact. This explains why its 'percussive' trait prediction is far below the ground truth. </p>
-
-    <h3>Synthesized Cello assessment</h3>
-    <p>We can also analyze more subtle defects by observing any timber trait of a any instrument. For instance, we can analyze the 'resonant/vibrant' trait of the cello.</p>
-
-    <div>
-      <img src="data/audio_examples/CELLO_radar.jpg" alt="Radar plots of TTP for Cello with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized cello samples (Blue); Predicted TTP of the sample with highest difference between 'resonant-vibrant' prediction and ground truth (Red).">
-    </div>
-    <p>We observe on the wood block averaged predicted TTP that the timbre traits with the highest errors are 'woody' and 'percussive'. While 'woody' can hardly be assessed on a spectrogram, we can make observations with respect to the 'percussive' trait.</p>
-    <!-- First Sound and Image -->
-    <div class="double-audios-container">
-        <div class="sound-image">
-            <audio controls>
-                <source src="data/audio_examples/CELLO_ground_truth_nearest_neighbor_trait_resonant-vibrant_dist_0.03_171VCNOF_64.wav" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-            <div>
-            <img src="data/audio_examples/CELLO_ground_truth_nearest_neighbor_trait_resonant-vibrant_dist_0.03_171VCNOF_64.jpg" alt="RWC cello sample with the lowest difference between predicted 'resonant-vibrant' value and ground truth.">
-        </div>
-    </div>
-
-    <!-- Second Sound and Image -->
-    <div class="sound-image">
-        <audio controls>
-            <source src="data/audio_examples/CELLO_ground_truth_furthest_neighbor_trait_resonant-vibrant_dist_0.22_sample_35_note_G3.wav" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-        <div>
-            <img src="data/audio_examples/CELLO_ground_truth_furthest_neighbor_trait_resonant-vibrant_dist_0.22_sample_35_note_G3.jpg" alt="Synthesized cello sample with the highest difference between predicted 'resonant-vibrant' value and ground truth">
-        </div>
-    </div>
-
-    <p>The 'resonant/vibrant' ground truth value of the cello is 0.865, the highest value for this trait in the 31 instruments considered here, suggesting it is an essential timbral quality for the cello. The prediction of this trait for the synthesized sample is 0.66. The spectrogram of the RWC sample shows harmonics whose frequencies fluctuate slightly over time, plausibly creating a 'vibrant' perceptual quality related to the pronounced vibrato in the sample. In contrast, the synthesized sample's spectrogram lacks these frequency oscillations in its harmonics. This difference helps explain why the synthesized sample receives a lower prediction score for the 'resonant/vibrant' attribute.</p>
-  
+    
     <!-- Pause other audio elements when one is played -->
-  <script>
-    function setupCallback(elem, elems) {
-      elem.addEventListener("play", function () {
-        for (var other of elems) {
-          if (other !== elem) {
-            other.pause();
+    <script>
+      function setupCallback(elem, elems) {
+        elem.addEventListener("play", function () {
+          for (var other of elems) {
+            if (other !== elem) {
+              other.pause();
+            }
           }
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.body.getElementsByTagName("audio");
+        for (var elem of elems) {
+          setupCallback(elem, elems);
         }
       });
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-      var elems = document.body.getElementsByTagName("audio");
-      for (var elem of elems) {
-        setupCallback(elem, elems);
-      }
-    });
-  </script>
-
+    </script>
 </body>
+
 </html>
