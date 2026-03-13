@@ -27,6 +27,37 @@
             border-radius: 5px;
             margin: 10px 0;
         }
+        .figures-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px; /* Space between rows */
+        }
+
+        .figures-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Space between figures */
+            flex-wrap: wrap; /* Optional: allows wrapping if needed */
+        }
+
+        figure {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin: 0;
+        }
+
+        figure img {
+            max-width: 200px; /* Adjust as needed */
+            height: auto;
+        }
+
+        figcaption {
+            margin-top: 5px;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -46,9 +77,51 @@
         We then demonstrate the benefit of this predictor for evaluating the performance of TokenSynth, a neural sound synthesizer. First, the MAE computed over the set of generated sounds under different conditioning modalities of the model provides the same ranking as a FAD computed with the RWC database as a reference, suggesting that the proposed predictors are able to provide equivalent information on a distributional basis. Second, because the model is able to qualitatively analyze isolated sounds, we can determine which generated sounds could be improved and identify specific timbral dimensions that need adjustment.
       </p>
       <p>This is the companion page for the paper: Predicting Timbre Traits for Interpretable Assessment of Musical Sound Synthesizers</p>
-      <p>Experience code is available in <a href="https://github.com/TheoChasleCauchy/paperTTPSynthesizerAssessment">this GitHub repository</a>.</p>
+      <p>Experiment code is available in <a href="https://github.com/TheoChasleCauchy/paperTTPSynthesizerAssessment">this GitHub repository</a>.</p>
     </div>
     
+    <div class="container">
+        <!-- Section 1 -->
+        <h2>Cross-evaluation Results of TTP-RANE</h2>
+        <p>
+            We evaluate the performance of our model TTP-RANE, using a cross-evaluation approach based on instrument. That is, for each instrument, we train a model using samples from all the other instruments and then evaluate its performance on samples from the target instrument. To evaluate a given model, we thus train 31 separate models, one for each instrument, with the same architecture and training conditions.
+            Below are presented the predicted TTPs for 6 different types of instrument during the cross-validation by the TTP-RANE-CLAP models. In other words, for each instrument, the TTP presented below was predicted by a TTP-RANE-CLAP model that had not been trained on samples from this instrument.
+        </p>
+        <div class="figures-container">
+            <!-- Top row: 3 figures -->
+            <div class="figures-row">
+                <figure>
+                    <img src="data/audio_examples/ALTO-SAX_Radar.jpg" alt="Radar plots of TTP for Alto Saxophone with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized alto saxophone samples (Blue)." style="width: 300px; height: auto;">
+                    <figcaption>Radar plots of TTP for Alto Saxophone with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized alto saxophone samples (Blue);</figcaption>
+                </figure>
+                <figure>
+                    <img src="data/audio_examples/FLUTE_Radar.jpg" alt="Radar plots of TTP for Flute with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized flute samples (Blue)." style="width: 300px; height: auto;">
+                    <figcaption>Radar plots of TTP for Flute with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized flute samples (Blue);</figcaption>
+                </figure>
+                <figure>
+                    <img src="data/audio_examples/PIANOFORTE_Radar.jpg" alt="Radar plots of TTP for Pianoforte with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized pianoforte samples (Blue)." style="width: 300px; height: auto;">
+                    <figcaption>Radar plots of TTP for Pianoforte with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized pianoforte samples (Blue);</figcaption>
+                </figure>
+            </div>
+
+            <!-- Bottom row: 3 figures -->
+            <div class="figures-row">
+                <figure>
+                    <img src="data/audio_examples/VIOLIN_Radar.jpg" alt="Radar plots of TTP for Wood Block with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized wood block samples (Blue); Predicted TTP of the sample with highest difference between 'percussive' prediction and ground truth (Red)." style="width: 300px; height: auto;">
+                    <figcaption>Radar plots of TTP for Violin with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized violin samples (Blue);</figcaption>
+                </figure>
+                <figure>
+                    <img src="data/audio_examples/HARP_Radar.jpg" alt="Radar plots of TTP for Harp with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized harp samples (Blue); Predicted TTP of the sample with highest difference between 'percussive' prediction and ground truth (Red)." style="width: 300px; height: auto;">
+                    <figcaption>Radar plots of TTP for Harp with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized harp samples (Blue); Predicted TTP of the sample with highest difference between 'percussive' prediction and ground truth (Red).</figcaption>
+                </figure>
+                <figure>
+                    <img src="data/audio_examples/SNARE-DRUM_Radar.jpg" alt="Radar plots of TTP for Snare Drum with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized snare drum samples (Blue); Predicted TTP of the sample with highest difference between 'percussive' prediction and ground truth (Red)." style="width: 300px; height: auto;">
+                    <figcaption>Radar plots of TTP for Snare Drum with their respective 95% confidence interval for Reymore's results (Green); Averaged predicted TTP on synthesized snare drum samples (Blue); Predicted TTP of the sample with highest difference between 'percussive' prediction and ground truth (Red).</figcaption>
+                </figure>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <!-- Section 1 -->
         <h2>TokenSynth Assessment using TTP-RANE</h2>
