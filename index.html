@@ -8,11 +8,25 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <style>
-    audio.sample_audio {
-      width: 200px;
-      max-width: 100%;
-    }
-  </style>
+        .double-audios-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+        .sound-image {
+            text-align: center;
+            width: 45%;
+        }
+        audio {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -28,15 +42,15 @@
   <div class="container">
     <h2>Abstract</h2>
     <p>
-      Quantitative assessment of neural audio synthesizers is now routinely conducted using distribution based metrics such as the Fréchet Audio Distance (FAD). Although this metric can be correlated with human perception, it offers limited interpretability beyond ranking different approaches. In this paper, we introduce a deep neural timbre trait predictor. The shallow learnable component is trained using the RWC musical instrument database and human judgments of 20 timbre descriptions (e.g., woody, percussive, rumbling, etc.) for 31 instruments. The resulting model shows strong correlation with average human ratings (r = 0.74, p = 9.6e-110). 
-      We then demonstrate the benefit of this predictor for evaluating the performance of TokenSynth, a sound synthesizer. First, the MAE computed over the set of generated sounds provides the same ranking as an FAD computed with the RWC database as a reference, suggesting that the proposed predictors are able to provide equivalent information on a distributional basis. Second, because the model is able to analyze isolated sounds, we can determine which generated sounds could be improved and identify specific timbral dimensions that need adjustment.
+      Quantitative assessment of neural audio synthesizers is now routinely conducted using distribution based metrics such as the Fréchet Audio Distance (FAD). Although this metric can be correlated with human perception, it offers limited interpretability beyond ranking different approaches. In this paper, we introduce a deep neural timbre trait predictor composed of a pretrained audio neural embedding CLAP, and a shallow learnable component. The latter is trained using the RWC musical instrument database and human judgments of 20 timbre descriptions (e.g., woody, percussive, rumbling, etc.) for 31 instruments. The resulting model shows strong correlation with average human ratings (r = 0.74, p < 0.001). 
+      We then demonstrate the benefit of this predictor for evaluating the performance of TokenSynth, a neural sound synthesizer. First, the MAE computed over the set of generated sounds under different conditioning modalities of the model provides the same ranking as a FAD computed with the RWC database as a reference, suggesting that the proposed predictors are able to provide equivalent information on a distributional basis. Second, because the model is able to qualitatively analyze isolated sounds, we can determine which generated sounds could be improved and identify specific timbral dimensions that need adjustment.
     </p>
     <p>This is the companion page for the paper: Predicting Timbre Traits for Interpretable Assessment of Musical Sound Synthesizers</p>
     <pre>Please, cite as:
-@article{chaslecauchy2026timbre,
+@conference{chaslecauchy2026timbre,
     title={Timbre Trait Prediction for Performance Analysis of Musical Sound Synthesizer using Deep Neural Embeddings},
     author={Chasle Cauchy, Théo et al.},
-    journal={Journal of Sound and Music Computing},
+    booktitle={Sound and Music Computing (SMC)},
     year={2026}
 }
     </pre>
@@ -44,64 +58,34 @@
 
   </div>
 
-  <!-- Error Analysis -->
+  <!-- Synthesizer Assessment -->
   <div class="container mt-5" id="table_techniques">
-    <h2>Error Analysis</h2>
-    <!-- <p>Below, the voice extracts generated from the different methods on two audio files: <code>61-70968-0035__11_004030.wav</code> and <code>01_005499.wav</code>.</p>
+    <h2>TokenSynth Assessment using TTP-RANE</h2>
+    <h3>Synthesized Wood Block assessment</h3>
+    <p>We start the analysis of the synthesis by observing the predicted TTP of the instrument with the highest MAE, here, the wood block.</p>
 
-    <table class="table table-responsive">
-      <thead>
-        <tr>
-          <th>Method</th>
-          <th>Speech+Siren</th>
-          <th>Speech+Music</th>
-          <th>Speech+Chainsaw</th>
-          <th>Dog</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-            <td><strong>Original audio</strong></td>
-          <td><audio controls class="sample_audio"><source src="example_audio/61-70968-0035__11_004030.wav" type="audio/wav"></audio></td>
-          <td><audio controls class="sample_audio"><source src="example_audio/61-70968-0054__29_016872.wav" type="audio/wav"></audio></td>
-          <td><audio controls class="sample_audio"><source src="example_audio/672-122797-0013__27_003443.wav" type="audio/wav"></audio></td>
-          <td><audio controls class="sample_audio"><source src="example_audio/01_005499.wav" type="audio/wav"></audio></td>
-        </tr>
-        <tr>
-          <td>Cohen-Adria et al.</td>
-          <td><audio controls class="sample_audio"><source src="example_audio/61-70968-0035__11_004030_cohen.wav" type="audio/wav"></audio></td>
-          <td><audio controls class="sample_audio"><source src="example_audio/61-70968-0054__29_016872_cohen.wav" type="audio/wav"></audio></td>
-          <td><audio controls class="sample_audio"><source src="example_audio/672-122797-0013__27_003443_cohen.wav" type="audio/wav"></audio></td>
-          <td><audio controls class="sample_audio"><source src="example_audio/01_005499_cohen.wav" type="audio/wav"></audio></td>
-        </tr>
-        <tr>
-          <td>Burkhardt et al.</td>
-          <td><audio controls class="sample_audio"><source src="example_audio/61-70968-0035__11_004030_burkhardt.wav" type="audio/wav"></audio></td>
-          <td><audio controls class="sample_audio"><source src="example_audio/61-70968-0054__29_016872_burkhardt.wav" type="audio/wav"></audio></td>
-          <td><audio controls class="sample_audio"><source src="example_audio/672-122797-0013__27_003443_burkhardt.wav" type="audio/wav"></audio></td>
-          <td><audio controls class="sample_audio"><source src="example_audio/01_005499_burkhardt.wav" type="audio/wav"></audio></td>
-        </tr>
-        <tr>
-          <td>Ours (Conv-TasNet)</td>
-          <td><audio controls class="sample_audio"><source src="example_audio/61-70968-0035__11_004030_ours_envss.wav" type="audio/wav"></audio></td>
-          <td><audio controls class="sample_audio"><source src="example_audio/61-70968-0054__29_016872_ours_envss.wav" type="audio/wav"></audio></td>
-          <td><audio controls class="sample_audio"><source src="example_audio/672-122797-0013__27_003443_ours_envss.wav" type="audio/wav"></audio></td>
-          <td><audio controls class="sample_audio"><source src="example_audio/01_005499_ours_envss.wav" type="audio/wav"></audio></td>
-        </tr>
-        <tr>
-            <td><strong>Ours</strong></td>
-          <td><audio controls class="sample_audio"><source src="example_audio/61-70968-0035__11_004030_ours.wav" type="audio/wav"></audio></td>
-          <td><audio controls class="sample_audio"><source src="example_audio/61-70968-0054__29_016872_ours.wav" type="audio/wav"></audio></td>
-          <td><audio controls class="sample_audio"><source src="example_audio/672-122797-0013__27_003443_ours.wav" type="audio/wav"></audio></td>
-          <td><audio controls class="sample_audio"><source src="example_audio/01_005499_ours.wav" type="audio/wav"></audio></td>
-        </tr>
-      </tbody>
-    </table>
-  </div> -->
+    <!-- First Sound and Image -->
+    <div class="double-audios-container">
+        <div class="sound-image">
+            <audio controls>
+                <source src="data/audio_examples/WOOD BLOCK_ground_truth_nearest_neighbor_trait_percussive_dist_0.01_411WBNO3_03.wav" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div>
+            <img src="data/audio_examples/WOOD_BLOCK_ground_truth_nearest_neighbor_trait_percussive_dist_0.01_411WBNO3_03.jpg" alt="RWC wood block sample with the lowest difference between predicted 'percussive' value and ground truth.">
+        </div>
+    </div>
 
-  <!-- <div class="container mt-3">
-    <p>As you can hear, since the dog audio resembles speech, the source separation and VAD do not produce perfect results in our method. However, you can hear that it preserves the sound scene better than the other methods.</p>
-  </div></div> -->
+    <!-- Second Sound and Image -->
+    <div class="sound-image">
+        <audio controls>
+            <source src="data/audio_examples/WOOD BLOCK_ground_truth_furthest_neighbor_trait_percussive_dist_0.61_sample_95_note_E4.wav" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <div>
+            <img src="data/audio_examples/WOOD_BLOCK_ground_truth_furthest_neighbor_trait_percussive_dist_0.61_sample_95_note_E4.jpg" alt="synthesized wood block sample with the highest difference between predicted 'percussive' value and ground truth">
+        </div>
+    </div>
 
   <!-- Pause other audio elements when one is played -->
   <script>
