@@ -1,5 +1,5 @@
 [project]
-name = "timbre-qualifier-SMC"
+name = "paperTTPSynthesizerAssessment"
 authors = [{ name = "Théo CHASLE CAUCHY", email = "theo.chasle-cauchy@ls2n.fr" }]
 version = "1.0.0"
 description = "Repository corresponding to the article 'Timbre Trait Prediction for Performance Analysis of Musical Sound Synthesizer using Deep Neural Embeddings'."

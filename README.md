@@ -1,4 +1,4 @@
-# Timbre-Qualifier-SMC
+# Timbre Trait Prediction for Performance Analysis of Musical Sound Synthesizer using Deep Neural Embeddings
 
 **Description**: Code repository for the paper "Timbre Trait Prediction for Performance Analysis of Musical Sound Synthesizer using Deep Neural Embeddings". This repository contains scripts to reproduce the experiments presented in the paper, the training of the timbre model and the assessment of the synthesizer.
 
@@ -6,8 +6,8 @@
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/TheoChasleCauchy/timbre-qualifier-SMC.git
-   cd timbre-qualifier-SMC
+   git clone https://github.com/TheoChasleCauchy/paperTTPSynthesizerAssessment.git
+   cd paperTTPSynthesizerAssessment
    ```
 
 2. Create a virtual environment (optional)
@@ -109,7 +109,7 @@ Results are saved in the `results/` sub-directories of the experiments directori
 - `experiments/synthesizer_assessment/results/`: Predictions and metrics on synthesized samples.
 
 ## Companion page
-Please check the companion page for audio examples: https://theochaslecauchy.github.io/timbre-qualifier-SMC/
+Please check the companion page for audio examples: https://theochaslecauchy.github.io/paperTTPSynthesizerAssessment/
 
 ## Citation
 If you use this code, please cite our paper:
