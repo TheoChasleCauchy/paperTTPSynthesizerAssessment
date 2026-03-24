@@ -1,13 +1,20 @@
-import torch
-import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import DataLoader, random_split
-import matplotlib.pyplot as plt
-import os
-from tqdm import tqdm
-import warnings
+import torch  # PyTorch for tensor operations and neural network modules
+import torch.nn as nn  # Neural network modules and loss functions
+import torch.optim as optim  # Optimization algorithms
+from torch.utils.data import DataLoader  # Data loading utilities
+import matplotlib.pyplot as plt  # Plotting library
+import os  # Operating system interfaces for directory and file operations
+from tqdm import tqdm  # Progress bar for iterative tasks
+import warnings  # Warning messages
 
 class TimbreMLP(nn.Module):
+    """
+    A Multi-Layer Perceptron (MLP) for timbre quality prediction.
+
+    This class implements a fully connected neural network for regression tasks,
+    with support for dropout, learning rate scheduling, early stopping, and model saving/loading.
+    """
+
     def __init__(
         self,
         input_size: int,
@@ -16,6 +23,16 @@ class TimbreMLP(nn.Module):
         save_path: str,
         dropout: float = 0.0,
     ):
+        """
+        Initialize the TimbreMLP model.
+
+        Args:
+            input_size (int): Size of the input layer.
+            hidden_sizes (list): List of sizes for the hidden layers.
+            output_size (int): Size of the output layer.
+            save_path (str): Directory path to save the model and metrics.
+            dropout (float, optional): Dropout rate for regularization. Defaults to 0.0.
+        """
         super(TimbreMLP, self).__init__()
         self.input_size = input_size
         self.hidden_sizes = hidden_sizes
@@ -24,9 +41,11 @@ class TimbreMLP(nn.Module):
         self.dropout = dropout
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+        # Initialize the layers of the MLP
         layers = []
         prev_size = input_size
 
+        # Add hidden layers with ReLU activation and optional dropout
         for size in hidden_sizes:
             layers.append(nn.Linear(prev_size, size))
             prev_size = size
@@ -34,16 +53,34 @@ class TimbreMLP(nn.Module):
             if dropout > 0:
                 layers.append(nn.Dropout(dropout))
 
+        # Add the output layer with Sigmoid activation
         layers.append(nn.Linear(prev_size, output_size))
         layers.append(nn.Sigmoid())
+
+        # Combine all layers into a sequential module
         self.layers = nn.Sequential(*layers)
         self.to(self.device)
 
     def get_params_number(self):
+        """
+        Calculate the total number of trainable parameters in the model.
+
+        Returns:
+            int: Total number of parameters.
+        """
         total_params = sum(p.numel() for p in self.parameters())
         return total_params
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        Forward pass of the MLP.
+
+        Args:
+            x (torch.Tensor): Input tensor.
+
+        Returns:
+            torch.Tensor: Output tensor after passing through the MLP.
+        """
         return self.layers(x)
 
     def train_model(
@@ -59,8 +96,28 @@ class TimbreMLP(nn.Module):
         lr_scheduler_factor: float = 0.3,  # Factor by which the learning rate will be reduced
         lr_scheduler_patience: int = 5,  # Number of epochs with no improvement after which learning rate will be reduced
     ):
+        """
+        Train the MLP model with early stopping and learning rate scheduling.
 
+        Args:
+            train_dataloader (DataLoader): DataLoader for training data.
+            valid_dataloader (DataLoader, optional): DataLoader for validation data. Defaults to None.
+            epochs (int, optional): Number of training epochs. Defaults to 500.
+            learning_rate (float, optional): Learning rate for the optimizer. Defaults to 0.001.
+            loss_fn: Loss function for training. Defaults to MSELoss.
+            optimizer_class: Optimizer class. Defaults to Adam.
+            plot_loss (bool, optional): Whether to plot the loss curves. Defaults to True.
+            patience (int, optional): Number of epochs to wait before early stopping. Defaults to 20.
+            lr_scheduler_factor (float, optional): Factor for learning rate reduction. Defaults to 0.3.
+            lr_scheduler_patience (int, optional): Patience for learning rate scheduler. Defaults to 5.
+
+        Returns:
+            None: The best model state is saved to disk.
+        """
+        # Initialize the optimizer
         optimizer = optimizer_class(self.parameters(), lr=learning_rate)
+
+        # Initialize loss history and tracking variables
         train_loss_history = [float('inf')]
         valid_loss_history = [float('inf')]
         best_valid_loss = float('inf')
@@ -77,12 +134,17 @@ class TimbreMLP(nn.Module):
             patience=lr_scheduler_patience
         )
 
+        # Training loop
         self.train()
         for epoch in range(epochs):
             # Training phase
             self.train()
             train_epoch_loss = 0.0
-            for batch_X, batch_y in tqdm(train_dataloader, desc=f"Training - Epoch {epoch+1}/{epochs}, train_loss: {train_loss_history[-1]:.4f}, test_loss: {valid_loss_history[-1]:.4f}"):
+            for batch_X, batch_y in tqdm(
+                train_dataloader,
+                desc=f"Training - Epoch {epoch+1}/{epochs}, train_loss: {train_loss_history[-1]:.4f}, test_loss: {valid_loss_history[-1]:.4f}"
+            ):
+                # Move data to the appropriate device
                 batch_X, batch_y = batch_X.to(self.device), batch_y.to(self.device)
                 optimizer.zero_grad()
                 outputs = self(batch_X)
@@ -90,18 +152,21 @@ class TimbreMLP(nn.Module):
                 loss.backward()
                 optimizer.step()
                 train_epoch_loss += loss.item()
+            # Calculate average training loss for the epoch
             train_epoch_loss /= len(train_dataloader)
             train_loss_history.append(train_epoch_loss)
 
-            # validing phase
+            # Validation phase
             self.eval()
             valid_epoch_loss = 0.0
             with torch.no_grad():
                 for batch_X, batch_y in valid_dataloader:
+                    # Move data to the appropriate device
                     batch_X, batch_y = batch_X.to(self.device), batch_y.to(self.device)
                     outputs = self(batch_X)
                     loss = loss_fn(outputs, batch_y)
                     valid_epoch_loss += loss.item()
+            # Calculate average validation loss for the epoch
             valid_epoch_loss /= len(valid_dataloader)
             valid_loss_history.append(valid_epoch_loss)
 
@@ -125,11 +190,12 @@ class TimbreMLP(nn.Module):
         if best_model_state is not None:
             self.load_state_dict(best_model_state)
 
+        # Plot loss and learning rate curves if requested
         if plot_loss:
             # Truncate loss history to only include up to the best epoch
             self.plot_loss_curve(
-                train_loss_history[:best_epoch],
-                valid_loss_history[:best_epoch]
+                train_loss_history[1:best_epoch],
+                valid_loss_history[1:best_epoch]
             )
             # Plot learning rate curve
             self.plot_learning_rate_curve(lr_history[:best_epoch])
@@ -138,6 +204,12 @@ class TimbreMLP(nn.Module):
         self.save_model()
 
     def plot_learning_rate_curve(self, lr_history):
+        """
+        Plot the learning rate evolution over epochs.
+
+        Args:
+            lr_history (list): History of learning rates over epochs.
+        """
         plt.figure(figsize=(10, 5))
         plt.plot(lr_history, label='Learning Rate', color='green')
         plt.xlabel('Epoch')
@@ -156,10 +228,16 @@ class TimbreMLP(nn.Module):
         print(f"Model saved to {model_path}")
 
     def plot_loss_curve(self, train_loss_history: list, valid_loss_history: list):
-        """Plot the training loss curve."""
+        """
+        Plot the training and validation loss curves.
+
+        Args:
+            train_loss_history (list): Training loss history.
+            valid_loss_history (list): Validation loss history.
+        """
         plt.figure(figsize=(10, 5))
-        plt.plot(train_loss_history[1:], label='Training Loss')
-        plt.plot(valid_loss_history[1:], label='valid Loss')
+        plt.plot(train_loss_history, label='Training Loss')
+        plt.plot(valid_loss_history, label='Validation Loss')
         plt.title('Training Loss Curve')
         plt.xlabel('Epoch')
         plt.ylabel('Loss')
@@ -180,10 +258,11 @@ class TimbreMLP(nn.Module):
 
         Args:
             eval_dataloader (DataLoader): DataLoader containing validation/test data.
-            loss_fn: Loss function (default: MSELoss).
+            loss_fn: Loss function for evaluation. Defaults to MSELoss.
+            verbose (bool, optional): Whether to print evaluation loss. Defaults to False.
 
         Returns:
-            tuple[float, torch.Tensor]: Evaluation loss and mean of model outputs.
+            tuple[float, torch.Tensor, float]: Evaluation loss, model outputs, and mean absolute error.
         """
         self.eval()
         total_loss = 0.0
@@ -192,6 +271,7 @@ class TimbreMLP(nn.Module):
 
         with torch.no_grad():
             for batch_X, batch_y in eval_dataloader:
+                # Move data to the appropriate device
                 batch_X, batch_y = batch_X.to(self.device), batch_y.to(self.device)
                 outputs = self(batch_X)
                 all_outputs.append(outputs.cpu())
@@ -199,11 +279,10 @@ class TimbreMLP(nn.Module):
                 total_mae += torch.mean(torch.abs(outputs - batch_y)).item()
                 total_loss += loss.item() * batch_X.size(0)
 
-        # Concatenate all outputs and compute mean
+        # Concatenate all outputs
         all_outputs = torch.cat(all_outputs, dim=0)
-        # mean_outputs = torch.mean(all_outputs, dim=0).cpu()
 
-        # Return average loss over the entire dataset
+        # Calculate average loss and MAE over the entire dataset
         eval_loss = total_loss / len(eval_dataloader.dataset)
         total_mae = total_mae / len(eval_dataloader.dataset)
         if verbose:
@@ -228,14 +307,15 @@ class TimbreMLP(nn.Module):
             input_size (int): Size of the input layer.
             hidden_sizes (list): List of hidden layer sizes.
             output_size (int): Size of the output layer.
-            dropout (float): Dropout rate (default: 0.0).
-            verbose (bool): Whether to print some info (default: True).
+            dropout (float, optional): Dropout rate. Defaults to 0.0.
+            verbose (bool, optional): Whether to print info. Defaults to False.
 
         Returns:
             TimbreMLP: An instance of TimbreMLP with loaded weights.
         """
         if verbose:
             warnings.warn("Ensure that the model architecture matches the saved model.")
+        # Initialize a new model with the same architecture
         model = TimbreMLP(
             input_size=input_size,
             hidden_sizes=hidden_sizes,
@@ -243,6 +323,7 @@ class TimbreMLP(nn.Module):
             save_path=os.path.dirname(path),
             dropout=dropout,
         )
+        # Load the saved model weights
         model.load_state_dict(torch.load(path))
         model.to(model.device)
         return model
