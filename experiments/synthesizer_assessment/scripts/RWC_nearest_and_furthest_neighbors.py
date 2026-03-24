@@ -67,7 +67,7 @@ def compute_nearest_neighbors():
         basename = basename.replace("_embedding.pt", ".wav")
 
         # Get the corresponding audio
-        audio_path = os.path.join("data/RWC/RWC-preprocessed/", instrument, instrument + "_" + basename)
+        audio_path = os.path.join("data/RWC/RWC-preprocessed/", instrument, basename)
         audio = librosa.load(audio_path)
             
         # Save the path of the nearest neighbor
@@ -139,7 +139,7 @@ def compute_nearest_neighbor_each_trait():
             basename = basename.replace("_embedding.pt", ".wav")
 
             # Get the corresponding audio
-            audio_path = os.path.join("data/RWC/RWC-preprocessed/", instrument, instrument + "_" + basename)
+            audio_path = os.path.join("data/RWC/RWC-preprocessed/", instrument, basename)
             audio = librosa.load(audio_path)
                 
             # Save the path of the nearest neighbor
@@ -207,7 +207,7 @@ def compute_furthest_neighbors():
         basename = basename.replace("_embedding.pt", ".wav")
 
         # Get the corresponding audio
-        audio_path = os.path.join("data/RWC/RWC-preprocessed/", instrument, instrument + "_" + basename)
+        audio_path = os.path.join("data/RWC/RWC-preprocessed/", instrument, basename)
         audio = librosa.load(audio_path)
             
         # Save the path of the furthest neighbor
@@ -279,7 +279,7 @@ def compute_furthest_neighbor_each_trait():
             basename = basename.replace("_embedding.pt", ".wav")
 
             # Get the corresponding audio
-            audio_path = os.path.join("data/RWC/RWC-preprocessed/", instrument, instrument + "_" + basename)
+            audio_path = os.path.join("data/RWC/RWC-preprocessed/", instrument, basename)
             audio = librosa.load(audio_path)
                 
             # Save the path of the furthest neighbor

@@ -39,7 +39,7 @@ def main():
     # compute_embeddings(embeddings_type)
     # compute_synthesized_samples_embeddings_metadata(embeddings_type)
     # compute_predictions_metrics(embeddings_type, hidden_layers)
-    tokenSynth_nearest_and_furthest_neighbors()
+    # tokenSynth_nearest_and_furthest_neighbors()
     RWC_nearest_and_furthest_neighbors()
 
 if __name__ == "__main__":
