@@ -61,7 +61,7 @@ def train_model(embeddings_type, hidden_layers, learning_rate, batch_size, patie
         case _:
             hidden_layer_suffix = f"{len(hidden_layers)}_hidden_layers"
 
-    # Set the output size to 20 (number of timber traits)
+    # Set the output size to 20 (number of timbre traits)
     output_size = 20
 
     # Create the model save folder

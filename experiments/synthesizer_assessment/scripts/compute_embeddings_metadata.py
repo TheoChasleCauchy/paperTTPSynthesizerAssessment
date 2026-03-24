@@ -47,7 +47,7 @@ def compute_synthesized_samples_embeddings_metadata(embeddings_type: str):
         )
 
         # Path to the ground truth quality traits CSV file
-        ground_truth_path = f"data/Reymore/timber_traits_ground_truth.csv"
+        ground_truth_path = f"data/Reymore/timbre_traits_ground_truth.csv"
 
         # Load the ground truth quality traits
         ground_truth_df = pd.read_csv(ground_truth_path)

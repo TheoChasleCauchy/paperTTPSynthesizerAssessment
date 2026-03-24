@@ -6,13 +6,13 @@ def create_RWC_metadata():
     """
     Create metadata for the RWC (Real World Computing) instrument dataset.
 
-    This function reads ground truth timber quality traits from a CSV file,
+    This function reads ground truth timbre quality traits from a CSV file,
     processes the RWC preprocessed dataset directory structure, and generates
     a comprehensive metadata CSV file. The metadata includes file paths, instrument names,
     and quality trait values for each audio file.
 
     Steps:
-    1. Loads timber quality ground truth data from the Reymore dataset.
+    1. Loads timbre quality ground truth data from the Reymore dataset.
     2. Extracts unique instrument names and quality trait column names.
     3. Iterates through the RWC preprocessed dataset directory.
     4. For each audio file, collects its path, instrument name, and corresponding quality traits.
@@ -27,8 +27,8 @@ def create_RWC_metadata():
     """
     print("[INFO] Creating RWC metadata.")
 
-    # Load the ground truth timber quality traits from the Reymore dataset
-    qualities_ground_truth = pd.read_csv("data/Reymore/timber_traits_ground_truth.csv")
+    # Load the ground truth timbre quality traits from the Reymore dataset
+    qualities_ground_truth = pd.read_csv("data/Reymore/timbre_traits_ground_truth.csv")
 
     # Extract unique instrument names from the ground truth data
     unique_instruments = qualities_ground_truth["RWC Name"].unique()

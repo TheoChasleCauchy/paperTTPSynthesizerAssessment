@@ -29,7 +29,7 @@ def train_model(embeddings_type, hidden_layers, learning_rate, batch_size, patie
         case _:
             hidden_layer_suffix = f"{len(hidden_layers)}_hidden_layers"
 
-    output_size = 20 # 20 timber traits
+    output_size = 20 # 20 timbre traits
 
     model_save_folder = f"models/synthesizer_assessment/"
 

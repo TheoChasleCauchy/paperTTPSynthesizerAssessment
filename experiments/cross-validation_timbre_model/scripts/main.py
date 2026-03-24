@@ -1,6 +1,6 @@
 from cross_validation_training import train_all_models
 from compute_predictions_metrics import compute_predictions_metrics
-from timber_traits_predictions_radar_charts import plot_all_instruments_radar_charts
+from timbre_traits_predictions_radar_charts import plot_all_instruments_radar_charts
 from CMTTP import CMTTP
 import random
 import numpy as np

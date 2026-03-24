@@ -28,9 +28,9 @@ def compute_nearest_neighbors():
     metadata_df = pd.read_csv(metadata_path)
 
     # Load ground truth data
-    ground_truth_path = "data/Reymore/timber_traits_ground_truth.csv"
+    ground_truth_path = "data/Reymore/timbre_traits_ground_truth.csv"
     ground_truth_df = pd.read_csv(ground_truth_path)
-    timber_traits_column = ground_truth_df.columns[2:]  # Get all label columns (excluding "RWC Name" and "Instrument")
+    timbre_traits_column = ground_truth_df.columns[2:]  # Get all label columns (excluding "RWC Name" and "Instrument")
 
     # Get unique instrument names
     instrument_names = metadata_df["Instrument"].unique()
@@ -44,7 +44,7 @@ def compute_nearest_neighbors():
         instrument_df = metadata_df[metadata_df["Instrument"] == instrument]
 
         # Get ground truth labels for the current instrument
-        ground_truth_labels = ground_truth_df[ground_truth_df["RWC Name"] == instrument][timber_traits_column]
+        ground_truth_labels = ground_truth_df[ground_truth_df["RWC Name"] == instrument][timbre_traits_column]
         ground_truth_labels_vector = torch.from_numpy(ground_truth_labels.values).float()
         # Normalize ground truth labels
         ground_truth_labels_vector = (ground_truth_labels_vector - 1) / 6.0
@@ -83,16 +83,16 @@ def compute_nearest_neighbors():
 
 def compute_nearest_neighbor_each_trait():
     """
-    Compute and save the nearest neighbor audio samples for each instrument and timber trait in the RWC dataset.
+    Compute and save the nearest neighbor audio samples for each instrument and timbre trait in the RWC dataset.
 
     This function:
     1. Loads the predictions and ground truth data for RWC samples.
-    2. For each instrument and timber trait, finds the RWC sample closest to the ground truth.
+    2. For each instrument and timbre trait, finds the RWC sample closest to the ground truth.
     3. Saves the nearest neighbor audio and its spectrogram.
 
     Steps:
     - Load the predictions and ground truth data.
-    - For each instrument and timber trait, compute the Euclidean distance between each RWC sample and the ground truth.
+    - For each instrument and timbre trait, compute the Euclidean distance between each RWC sample and the ground truth.
     - Save the nearest neighbor audio and its spectrogram to disk.
 
     Returns:
@@ -103,9 +103,9 @@ def compute_nearest_neighbor_each_trait():
     metadata_df = pd.read_csv(metadata_path)
 
     # Load ground truth data
-    ground_truth_path = "data/Reymore/timber_traits_ground_truth.csv"
+    ground_truth_path = "data/Reymore/timbre_traits_ground_truth.csv"
     ground_truth_df = pd.read_csv(ground_truth_path)
-    timber_traits_column = ground_truth_df.columns[2:]
+    timbre_traits_column = ground_truth_df.columns[2:]
 
     # Get unique instrument names
     instrument_names = metadata_df["Instrument"].unique()
@@ -115,7 +115,7 @@ def compute_nearest_neighbor_each_trait():
         instrument_df = metadata_df[metadata_df["Instrument"] == instrument]
 
         # Get ground truth labels for the current instrument
-        ground_truth_labels = ground_truth_df[ground_truth_df["RWC Name"] == instrument][timber_traits_column]
+        ground_truth_labels = ground_truth_df[ground_truth_df["RWC Name"] == instrument][timbre_traits_column]
         ground_truth_labels_vector = torch.from_numpy(ground_truth_labels.values).float()
         ground_truth_labels_vector = (ground_truth_labels_vector - 1) / 6.0
 
@@ -128,23 +128,23 @@ def compute_nearest_neighbor_each_trait():
         os.makedirs(output_folder, exist_ok=True)
 
         # Initialize variables to track the nearest neighbor for each trait
-        min_distance = {timber_trait: float("inf") for timber_trait in timber_traits_column}
-        nearest_neighbor_index = {timber_trait: -1 for timber_trait in timber_traits_column}
+        min_distance = {timbre_trait: float("inf") for timbre_trait in timbre_traits_column}
+        nearest_neighbor_index = {timbre_trait: -1 for timbre_trait in timbre_traits_column}
 
         # Find the nearest neighbor for each trait
         for i, row in enumerate(instrument_df.itertuples(index=False)):
-            for timber_trait_ind, timber_trait in enumerate(timber_traits_column):
-                sample_predictions = row[timber_trait_ind + 2]
+            for timbre_trait_ind, timbre_trait in enumerate(timbre_traits_column):
+                sample_predictions = row[timbre_trait_ind + 2]
                 sample_predictions = torch.tensor(sample_predictions, dtype=torch.float32)
-                distance = torch.norm(sample_predictions - ground_truth_labels_vector[0, timber_trait_ind]).item()
+                distance = torch.norm(sample_predictions - ground_truth_labels_vector[0, timbre_trait_ind]).item()
 
-                if distance < min_distance[timber_trait]:
-                    nearest_neighbor_index[timber_trait] = i
-                    min_distance[timber_trait] = distance
+                if distance < min_distance[timbre_trait]:
+                    nearest_neighbor_index[timbre_trait] = i
+                    min_distance[timbre_trait] = distance
 
         # Save the nearest neighbor audio for each trait
-        for timber_trait in timber_traits_column:
-            basename = os.path.basename(embedding_paths.iloc[nearest_neighbor_index[timber_trait]])
+        for timbre_trait in timbre_traits_column:
+            basename = os.path.basename(embedding_paths.iloc[nearest_neighbor_index[timbre_trait]])
             underscore_index = basename.find("_")
             if underscore_index != -1:
                 basename = basename[underscore_index + 1:]
@@ -152,7 +152,7 @@ def compute_nearest_neighbor_each_trait():
 
             audio_path = os.path.join("data/RWC/RWC-preprocessed/", instrument, basename)
             audio = librosa.load(audio_path)
-            output_audio_path = os.path.join(output_folder, f"{instrument}_ground_truth_nearest_neighbor_trait_{timber_trait}_dist_{min_distance[timber_trait]:.2f}_{basename}")
+            output_audio_path = os.path.join(output_folder, f"{instrument}_ground_truth_nearest_neighbor_trait_{timbre_trait}_dist_{min_distance[timbre_trait]:.2f}_{basename}")
             sf.write(output_audio_path, audio[0], samplerate=audio[1])
             wav_to_spectrogram(output_audio_path)
 
@@ -178,9 +178,9 @@ def compute_furthest_neighbors():
     metadata_df = pd.read_csv(metadata_path)
 
     # Load ground truth data
-    ground_truth_path = "data/Reymore/timber_traits_ground_truth.csv"
+    ground_truth_path = "data/Reymore/timbre_traits_ground_truth.csv"
     ground_truth_df = pd.read_csv(ground_truth_path)
-    timber_traits_column = ground_truth_df.columns[2:]
+    timbre_traits_column = ground_truth_df.columns[2:]
 
     # Get unique instrument names
     instrument_names = metadata_df["Instrument"].unique()
@@ -194,7 +194,7 @@ def compute_furthest_neighbors():
         instrument_df = metadata_df[metadata_df["Instrument"] == instrument]
 
         # Get ground truth labels for the current instrument
-        ground_truth_labels = ground_truth_df[ground_truth_df["RWC Name"] == instrument][timber_traits_column]
+        ground_truth_labels = ground_truth_df[ground_truth_df["RWC Name"] == instrument][timbre_traits_column]
         ground_truth_labels_vector = torch.from_numpy(ground_truth_labels.values).float()
         ground_truth_labels_vector = (ground_truth_labels_vector - 1) / 6.0
 
@@ -232,16 +232,16 @@ def compute_furthest_neighbors():
 
 def compute_furthest_neighbor_each_trait():
     """
-    Compute and save the furthest neighbor audio samples for each instrument and timber trait in the RWC dataset.
+    Compute and save the furthest neighbor audio samples for each instrument and timbre trait in the RWC dataset.
 
     This function:
     1. Loads the predictions and ground truth data for RWC samples.
-    2. For each instrument and timber trait, finds the RWC sample furthest from the ground truth.
+    2. For each instrument and timbre trait, finds the RWC sample furthest from the ground truth.
     3. Saves the furthest neighbor audio and its spectrogram.
 
     Steps:
     - Load the predictions and ground truth data.
-    - For each instrument and timber trait, compute the Euclidean distance between each RWC sample and the ground truth.
+    - For each instrument and timbre trait, compute the Euclidean distance between each RWC sample and the ground truth.
     - Save the furthest neighbor audio and its spectrogram to disk.
 
     Returns:
@@ -252,9 +252,9 @@ def compute_furthest_neighbor_each_trait():
     metadata_df = pd.read_csv(metadata_path)
 
     # Load ground truth data
-    ground_truth_path = "data/Reymore/timber_traits_ground_truth.csv"
+    ground_truth_path = "data/Reymore/timbre_traits_ground_truth.csv"
     ground_truth_df = pd.read_csv(ground_truth_path)
-    timber_traits_column = ground_truth_df.columns[2:]
+    timbre_traits_column = ground_truth_df.columns[2:]
 
     # Get unique instrument names
     instrument_names = metadata_df["Instrument"].unique()
@@ -264,7 +264,7 @@ def compute_furthest_neighbor_each_trait():
         instrument_df = metadata_df[metadata_df["Instrument"] == instrument]
 
         # Get ground truth labels for the current instrument
-        ground_truth_labels = ground_truth_df[ground_truth_df["RWC Name"] == instrument][timber_traits_column]
+        ground_truth_labels = ground_truth_df[ground_truth_df["RWC Name"] == instrument][timbre_traits_column]
         ground_truth_labels_vector = torch.from_numpy(ground_truth_labels.values).float()
         ground_truth_labels_vector = (ground_truth_labels_vector - 1) / 6.0
 
@@ -277,23 +277,23 @@ def compute_furthest_neighbor_each_trait():
         os.makedirs(output_folder, exist_ok=True)
 
         # Initialize variables to track the furthest neighbor for each trait
-        max_distance = {timber_trait: float("-inf") for timber_trait in timber_traits_column}
-        furthest_neighbor_index = {timber_trait: -1 for timber_trait in timber_traits_column}
+        max_distance = {timbre_trait: float("-inf") for timbre_trait in timbre_traits_column}
+        furthest_neighbor_index = {timbre_trait: -1 for timbre_trait in timbre_traits_column}
 
         # Find the furthest neighbor for each trait
         for i, row in enumerate(instrument_df.itertuples(index=False)):
-            for timber_trait_ind, timber_trait in enumerate(timber_traits_column):
-                sample_predictions = row[timber_trait_ind + 2]
+            for timbre_trait_ind, timbre_trait in enumerate(timbre_traits_column):
+                sample_predictions = row[timbre_trait_ind + 2]
                 sample_predictions = torch.tensor(sample_predictions, dtype=torch.float32)
-                distance = torch.norm(sample_predictions - ground_truth_labels_vector[0, timber_trait_ind]).item()
+                distance = torch.norm(sample_predictions - ground_truth_labels_vector[0, timbre_trait_ind]).item()
 
-                if distance > max_distance[timber_trait]:
-                    furthest_neighbor_index[timber_trait] = i
-                    max_distance[timber_trait] = distance
+                if distance > max_distance[timbre_trait]:
+                    furthest_neighbor_index[timbre_trait] = i
+                    max_distance[timbre_trait] = distance
 
         # Save the furthest neighbor audio for each trait
-        for timber_trait in timber_traits_column:
-            basename = os.path.basename(embedding_paths.iloc[furthest_neighbor_index[timber_trait]])
+        for timbre_trait in timbre_traits_column:
+            basename = os.path.basename(embedding_paths.iloc[furthest_neighbor_index[timbre_trait]])
             underscore_index = basename.find("_")
             if underscore_index != -1:
                 basename = basename[underscore_index + 1:]
@@ -301,7 +301,7 @@ def compute_furthest_neighbor_each_trait():
 
             audio_path = os.path.join("data/RWC/RWC-preprocessed/", instrument, basename)
             audio = librosa.load(audio_path)
-            output_audio_path = os.path.join(output_folder, f"{instrument}_ground_truth_furthest_neighbor_trait_{timber_trait}_dist_{max_distance[timber_trait]:.2f}_{basename}")
+            output_audio_path = os.path.join(output_folder, f"{instrument}_ground_truth_furthest_neighbor_trait_{timbre_trait}_dist_{max_distance[timbre_trait]:.2f}_{basename}")
             sf.write(output_audio_path, audio[0], samplerate=audio[1])
             wav_to_spectrogram(output_audio_path)
 

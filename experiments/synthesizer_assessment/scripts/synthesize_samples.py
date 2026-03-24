@@ -19,14 +19,14 @@ def synthesize_audios(condition_type: str, seed: int):
 
     This function:
     1. Initializes the TokenSynth, CLAP, and DACDecoder models.
-    2. Loads the ground truth timber traits for instruments.
+    2. Loads the ground truth timbre traits for instruments.
     3. For each instrument, generates 100 random MIDI notes within its range.
     4. For each note, synthesizes audio using the specified condition type.
     5. Saves the synthesized audio to disk.
 
     Steps:
     - Initialize models and set the device.
-    - Load the ground truth timber traits.
+    - Load the ground truth timbre traits.
     - For each instrument, generate random notes or load previously generated notes.
     - For each note, synthesize audio using the specified condition type.
     - Save the synthesized audio to disk.
@@ -43,8 +43,8 @@ def synthesize_audios(condition_type: str, seed: int):
     clap = CLAP(device=device)
     decoder = DACDecoder(device=device)
 
-    # Load the ground truth timber traits
-    timbre_traits_ground_truth = pd.read_csv("data/Reymore/timber_traits_ground_truth.csv")
+    # Load the ground truth timbre traits
+    timbre_traits_ground_truth = pd.read_csv("data/Reymore/timbre_traits_ground_truth.csv")
     instruments = timbre_traits_ground_truth["RWC Name"].unique()
 
     # Create the output directory for synthesized audio

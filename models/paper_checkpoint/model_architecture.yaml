@@ -1,0 +1,3 @@
+input_size: 512
+hidden_layers: []
+output_size: 20

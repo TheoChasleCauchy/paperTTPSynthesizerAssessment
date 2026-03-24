@@ -8,7 +8,7 @@ import yaml  # YAML file handling
 
 def compute_predictions(embeddings_type, hidden_layers_conf, hidden_layers_suffix):
     """
-    Compute predictions for timber traits using a pre-trained TimbreMLP model.
+    Compute predictions for timbre traits using a pre-trained TimbreMLP model.
 
     Args:
         embeddings_type (str): Type of embeddings (e.g., "clap", "vggish", "mert").
@@ -28,9 +28,9 @@ def compute_predictions(embeddings_type, hidden_layers_conf, hidden_layers_suffi
     Returns:
         None: Predictions are saved to a CSV file.
     """
-    print(f"Computing Timber Traits Predictions with the models trained on {embeddings_type} with {hidden_layers_suffix}")
+    print(f"Computing Timbre Traits Predictions with the models trained on {embeddings_type} with {hidden_layers_suffix}")
 
-    # Set the output size to 20 (number of timber traits)
+    # Set the output size to 20 (number of timbre traits)
     output_size = 20
 
     # Determine the input size based on the embedding type
@@ -78,7 +78,7 @@ def compute_predictions(embeddings_type, hidden_layers_conf, hidden_layers_suffi
         df.append({
             "Sample": row.Path,
             "Excluded Instrument": instrument,
-            **{timber_trait: predicted_values[:, timber_trait_id].item() for timber_trait_id, timber_trait in enumerate(timbre_traits_names)}
+            **{timbre_trait: predicted_values[:, timbre_trait_id].item() for timbre_trait_id, timbre_trait in enumerate(timbre_traits_names)}
         })
 
     # Save the predictions to a CSV file
@@ -89,7 +89,7 @@ def compute_predictions(embeddings_type, hidden_layers_conf, hidden_layers_suffi
 
 def compute_errors(embeddings_type, hidden_layers_suffix):
     """
-    Compute absolute errors between predicted and ground truth timber traits.
+    Compute absolute errors between predicted and ground truth timbre traits.
 
     Args:
         embeddings_type (str): Type of embeddings (e.g., "clap", "vggish", "mert").
@@ -115,7 +115,7 @@ def compute_errors(embeddings_type, hidden_layers_suffix):
     predictions_df = pd.read_csv(predictions_path)
 
     # Load the ground truth data
-    ground_truth_path = f"data/Reymore/timber_traits_ground_truth.csv"
+    ground_truth_path = f"data/Reymore/timbre_traits_ground_truth.csv"
     ground_truth_df = pd.read_csv(ground_truth_path)
 
     # Create a mapping from RWC Name to ground truth values
@@ -129,8 +129,8 @@ def compute_errors(embeddings_type, hidden_layers_suffix):
         if instrument in ground_truth_mapping:
             ground_truth_values = ground_truth_mapping[instrument]
             normalized_ground_truth_values = (ground_truth_values - 1) / 6.0  # Normalize to [0,1]
-            for i, timber_trait in enumerate(ground_truth_df.columns[2:]):
-                predictions_df.at[row.name, timber_trait] = abs(row[timber_trait] - normalized_ground_truth_values[i])
+            for i, timbre_trait in enumerate(ground_truth_df.columns[2:]):
+                predictions_df.at[row.name, timbre_trait] = abs(row[timbre_trait] - normalized_ground_truth_values[i])
         else:
             print(f"Warning: No ground truth found for instrument '{instrument}'")
 
@@ -139,7 +139,7 @@ def compute_errors(embeddings_type, hidden_layers_suffix):
 
 def get_MAE_per_instrument(embeddings_type, hidden_layers_suffix):
     """
-    Compute Mean Absolute Error (MAE) per instrument for each timber trait.
+    Compute Mean Absolute Error (MAE) per instrument for each timbre trait.
 
     Args:
         embeddings_type (str): Type of embeddings (e.g., "clap", "vggish", "mert").
@@ -147,13 +147,13 @@ def get_MAE_per_instrument(embeddings_type, hidden_layers_suffix):
 
     This function:
     1. Loads the absolute errors.
-    2. For each instrument, computes the MAE for each timber trait.
+    2. For each instrument, computes the MAE for each timbre trait.
     3. Adds an average column for each instrument and an average row for all instruments.
     4. Saves the MAE results to a CSV file.
 
     Steps:
     - Load the absolute errors.
-    - For each instrument, compute the MAE for each timber trait.
+    - For each instrument, compute the MAE for each timbre trait.
     - Add an average column for each instrument and an average row for all instruments.
     - Save the MAE results to a CSV file.
 
@@ -166,7 +166,7 @@ def get_MAE_per_instrument(embeddings_type, hidden_layers_suffix):
     absolute_errors_path = f"experiments/cross-validation_timbre_model/results/timbre_model_{embeddings_type}_{hidden_layers_suffix}/cross-validation_predictions_absolute_errors.csv"
     absolute_errors_df = pd.read_csv(absolute_errors_path)
 
-    # Compute MAE for each instrument and each timber trait
+    # Compute MAE for each instrument and each timbre trait
     mae_dict_per_instrument = {}
     for instrument in absolute_errors_df["Excluded Instrument"].unique():
         instrument_df = absolute_errors_df[absolute_errors_df["Excluded Instrument"] == instrument]
@@ -202,7 +202,7 @@ def get_MAE_per_instrument(embeddings_type, hidden_layers_suffix):
 
 def compute_correlation(embedding_types, model_hidden_layers):
     """
-    Compute Pearson correlation between predicted and ground truth timber traits.
+    Compute Pearson correlation between predicted and ground truth timbre traits.
 
     Args:
         embedding_types (list): List of embedding types (e.g., ["clap", "vggish", "mert"]).
@@ -224,14 +224,14 @@ def compute_correlation(embedding_types, model_hidden_layers):
         None: Correlation results are saved to a CSV file.
     """
     # Load the ground truth data
-    ground_truth_path = f"data/Reymore/timber_traits_ground_truth.csv"
+    ground_truth_path = f"data/Reymore/timbre_traits_ground_truth.csv"
     ground_truth_df = pd.read_csv(ground_truth_path)
-    timber_traits_names = ground_truth_df.columns[2:]  # Skip first two columns (Instrument, RWC Name)
+    timbre_traits_names = ground_truth_df.columns[2:]  # Skip first two columns (Instrument, RWC Name)
 
     # Create a mapping from RWC Name to ground truth values
     ground_truth_mapping = {}
     for _, row in ground_truth_df.iterrows():
-        ground_truth_mapping[row["RWC Name"]] = row[timber_traits_names]  # Skip first two columns (Instrument, RWC Name)
+        ground_truth_mapping[row["RWC Name"]] = row[timbre_traits_names]  # Skip first two columns (Instrument, RWC Name)
 
     # Initialize a dictionary to store correlation results
     corr_dict = {}
@@ -258,7 +258,7 @@ def compute_correlation(embedding_types, model_hidden_layers):
             instruments_predictions = predictions_df.groupby("Excluded Instrument")
             instrument_mean_preds = {}
             for instrument, instrument_df in instruments_predictions:
-                instrument_mean_preds[instrument] = instrument_df[timber_traits_names].mean()  # Skip first two columns (Sample and Instrument)
+                instrument_mean_preds[instrument] = instrument_df[timbre_traits_names].mean()  # Skip first two columns (Sample and Instrument)
 
             # Compute correlation for each quality column
             all_predictions = []
@@ -288,7 +288,7 @@ def compute_correlation(embedding_types, model_hidden_layers):
     cmttp_instruments_predictions = cmttp_predictions_df.groupby("Instrument")
     cmttp_instrument_mean_preds = {}
     for instrument, instrument_df in cmttp_instruments_predictions:
-        cmttp_instrument_mean_preds[instrument] = instrument_df[timber_traits_names].mean()  # Skip first two columns (Sample and Instrument)
+        cmttp_instrument_mean_preds[instrument] = instrument_df[timbre_traits_names].mean()  # Skip first two columns (Sample and Instrument)
 
     # Compute correlation for CMTTP predictions
     cmttp_all_predictions = []
@@ -316,7 +316,7 @@ def compute_correlation(embedding_types, model_hidden_layers):
 
 def compute_predictions_metrics():
     """
-    Compute and save all prediction metrics for timber traits.
+    Compute and save all prediction metrics for timbre traits.
 
     This function:
     1. Loads the configuration from a YAML file.

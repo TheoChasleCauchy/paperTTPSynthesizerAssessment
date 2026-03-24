@@ -6,11 +6,11 @@ class SamplesDataset(Dataset):
     """
     A custom PyTorch Dataset class for loading audio embeddings and their corresponding labels.
 
-    This class allows for flexible filtering of samples by instrument and timber_trait traits.
+    This class allows for flexible filtering of samples by instrument and timbre_trait traits.
     It supports loading data from a CSV file or a pandas DataFrame.
     """
 
-    def __init__(self, csv_file=None, df=None, exclude_instrument=None, include_only=None, only_timber_trait=None):
+    def __init__(self, csv_file=None, df=None, exclude_instrument=None, include_only=None, only_timbre_trait=None):
         """
         Initialize the SamplesDataset.
 
@@ -19,7 +19,7 @@ class SamplesDataset(Dataset):
             df (pd.DataFrame, optional): DataFrame containing the dataset. Defaults to None.
             exclude_instrument (str, optional): Instrument to exclude from the dataset. Defaults to None.
             include_only (str, optional): Only include samples from this instrument. Defaults to None.
-            only_timber_trait (str, optional): Only include this specific timber_trait trait. Defaults to None.
+            only_timbre_trait (str, optional): Only include this specific timbre_trait trait. Defaults to None.
 
         Raises:
             AssertionError: If neither `csv_file` nor `df` is provided, or if both `exclude_instrument` and `include_only` are specified.
@@ -47,14 +47,14 @@ class SamplesDataset(Dataset):
         # Extract file paths from the first column
         self.file_paths = self.data.iloc[:, 0].values
 
-        # Extract labels based on the specified timber_trait or all timber_traits
-        if only_timber_trait is not None:
-            # Get the index of the specified timber_trait column
-            timber_trait_col_index = self.data.columns.get_loc(only_timber_trait)
-            # Extract only the specified timber_trait column as labels
-            self.labels = self.data.iloc[:, timber_trait_col_index:timber_trait_col_index + 1].values
+        # Extract labels based on the specified timbre_trait or all timbre_traits
+        if only_timbre_trait is not None:
+            # Get the index of the specified timbre_trait column
+            timbre_trait_col_index = self.data.columns.get_loc(only_timbre_trait)
+            # Extract only the specified timbre_trait column as labels
+            self.labels = self.data.iloc[:, timbre_trait_col_index:timbre_trait_col_index + 1].values
         else:
-            # Extract all timber_trait columns as labels
+            # Extract all timbre_trait columns as labels
             self.labels = self.data.iloc[:, 2:].values
 
         # Normalize labels to the [0, 1] range by subtracting 1 and dividing by 6
@@ -87,7 +87,7 @@ class SamplesDataset(Dataset):
 
     def get_num_labels(self):
         """
-        Return the number of labels (timber_trait traits) in the dataset.
+        Return the number of labels (timbre_trait traits) in the dataset.
 
         Returns:
             int: Number of labels.
@@ -104,7 +104,7 @@ class SamplesDataset(Dataset):
         return len(self.file_paths)
 
     @staticmethod
-    def create_dataloader(csv_file=None, df=None, batch_size=32, shuffle=True, exclude_instrument=None, include_only=None, only_timber_trait=None):
+    def create_dataloader(csv_file=None, df=None, batch_size=32, shuffle=True, exclude_instrument=None, include_only=None, only_timbre_trait=None):
         """
         Create a DataLoader for the SamplesDataset.
 
@@ -115,7 +115,7 @@ class SamplesDataset(Dataset):
             shuffle (bool, optional): Whether to shuffle the data. Defaults to True.
             exclude_instrument (str, optional): Instrument to exclude from the dataset. Defaults to None.
             include_only (str, optional): Only include samples from this instrument. Defaults to None.
-            only_timber_trait (str, optional): Only include this specific timber_trait trait. Defaults to None.
+            only_timbre_trait (str, optional): Only include this specific timbre_trait trait. Defaults to None.
 
         Returns:
             tuple: A tuple containing the SamplesDataset instance and the DataLoader.
@@ -126,7 +126,7 @@ class SamplesDataset(Dataset):
             df=df,
             exclude_instrument=exclude_instrument,
             include_only=include_only,
-            only_timber_trait=only_timber_trait
+            only_timbre_trait=only_timbre_trait
         )
         # Create the DataLoader with the specified batch size and shuffle option
         dataloader = DataLoader(
@@ -137,14 +137,14 @@ class SamplesDataset(Dataset):
         return dataset, dataloader
 
     @staticmethod
-    def filter_by_instrument(dataset, instrument, only_timber_trait=None):
+    def filter_by_instrument(dataset, instrument, only_timbre_trait=None):
         """
         Filter a dataset to include only samples of the specified instrument.
 
         Args:
             dataset (SamplesDataset or Subset): The dataset to filter.
             instrument (str): The instrument to include in the filtered dataset.
-            only_timber_trait (str, optional): Only include this specific timber_trait trait. Defaults to None.
+            only_timbre_trait (str, optional): Only include this specific timbre_trait trait. Defaults to None.
 
         Returns:
             SamplesDataset: A new SamplesDataset instance containing only samples of the specified instrument.
@@ -162,5 +162,5 @@ class SamplesDataset(Dataset):
             filtered_data = dataset.data[dataset.data["Instrument"] == instrument].copy()
 
         # Create a new SamplesDataset with the filtered data
-        filtered_dataset = SamplesDataset(df=filtered_data, include_only=instrument, only_timber_trait=only_timber_trait)
+        filtered_dataset = SamplesDataset(df=filtered_data, include_only=instrument, only_timbre_trait=only_timbre_trait)
         return filtered_dataset

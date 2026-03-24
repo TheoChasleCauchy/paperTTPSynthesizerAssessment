@@ -46,7 +46,7 @@ def compute_predictions_on_TokenSynth(embeddings_type, model_hidden_layers, hidd
         case _:
             raise ValueError(f"Unsupported embedding type: {embeddings_type}")
 
-    output_size = 20  # 20 timber traits
+    output_size = 20  # 20 timbre traits
     model_save_path = f"models/synthesizer_assessment/timbre_model_{embeddings_type}_{hidden_layers_suffix}"
 
     # Iterate over each condition type
@@ -78,7 +78,7 @@ def compute_predictions_on_TokenSynth(embeddings_type, model_hidden_layers, hidd
             df.append({
                 "Sample": row.Path,
                 "Instrument": instrument,
-                **{timber_trait: predicted_values[:, timber_trait_id].item() for timber_trait_id, timber_trait in enumerate(timbre_traits_names)}
+                **{timbre_trait: predicted_values[:, timbre_trait_id].item() for timbre_trait_id, timbre_trait in enumerate(timbre_traits_names)}
             })
 
         # Convert the list of dictionaries to a DataFrame
@@ -127,7 +127,7 @@ def compute_predictions_on_RWC(embeddings_type, model_hidden_layers, hidden_laye
         case _:
             raise ValueError(f"Unsupported embedding type: {embeddings_type}")
 
-    output_size = 20  # 20 timber traits
+    output_size = 20  # 20 timbre traits
     model_save_path = f"models/synthesizer_assessment/timbre_model_{embeddings_type}_{hidden_layers_suffix}"
 
     # Load the RWC samples metadata
@@ -158,7 +158,7 @@ def compute_predictions_on_RWC(embeddings_type, model_hidden_layers, hidden_laye
         df.append({
             "Sample": row.Path,
             "Instrument": instrument,
-            **{timber_trait: predicted_values[:, timber_trait_id].item() for timber_trait_id, timber_trait in enumerate(timbre_traits_names)}
+            **{timbre_trait: predicted_values[:, timbre_trait_id].item() for timbre_trait_id, timbre_trait in enumerate(timbre_traits_names)}
         })
 
     # Convert the list of dictionaries to a DataFrame
@@ -170,7 +170,7 @@ def compute_predictions_on_RWC(embeddings_type, model_hidden_layers, hidden_laye
 
 def compute_errors():
     """
-    Compute absolute errors between predicted and ground truth timber traits.
+    Compute absolute errors between predicted and ground truth timbre traits.
 
     This function:
     1. For each condition type, loads the predictions and ground truth data.
@@ -189,7 +189,7 @@ def compute_errors():
         predictions_path = f"experiments/synthesizer_assessment/results/{condition_type}_conditioned_synthesis/{condition_type}_predictions.csv"
         predictions_df = pd.read_csv(predictions_path)
 
-        ground_truth_path = f"data/Reymore/timber_traits_ground_truth.csv"
+        ground_truth_path = f"data/Reymore/timbre_traits_ground_truth.csv"
         ground_truth_df = pd.read_csv(ground_truth_path)
 
         # Create a mapping from RWC Name to ground truth values
@@ -203,8 +203,8 @@ def compute_errors():
             if instrument in ground_truth_mapping:
                 ground_truth_values = ground_truth_mapping[instrument]
                 normalized_ground_truth_values = (ground_truth_values - 1) / 6.0
-                for i, timber_trait in enumerate(ground_truth_df.columns[2:]):
-                    predictions_df.at[row.name, timber_trait] = abs(row[timber_trait] - normalized_ground_truth_values[i])
+                for i, timbre_trait in enumerate(ground_truth_df.columns[2:]):
+                    predictions_df.at[row.name, timbre_trait] = abs(row[timbre_trait] - normalized_ground_truth_values[i])
             else:
                 print(f"Warning: No ground truth found for instrument '{instrument}'")
 
@@ -213,17 +213,17 @@ def compute_errors():
 
 def get_MAE_per_instrument():
     """
-    Compute Mean Absolute Error (MAE) per instrument for each timber trait.
+    Compute Mean Absolute Error (MAE) per instrument for each timbre trait.
 
     This function:
     1. For each condition type, loads the absolute errors.
-    2. For each instrument, computes the MAE for each timber trait.
+    2. For each instrument, computes the MAE for each timbre trait.
     3. Adds an average column for each instrument and an average row for all instruments.
     4. Saves the MAE results to a CSV file for each condition type.
 
     Steps:
     - For each condition type, load the absolute errors.
-    - For each instrument, compute the MAE for each timber trait.
+    - For each instrument, compute the MAE for each timbre trait.
     - Add an average column for each instrument and an average row for all instruments.
     - Save the MAE results to a CSV file.
 
@@ -235,7 +235,7 @@ def get_MAE_per_instrument():
         absolute_errors_df = pd.read_csv(absolute_errors_path)
         instrument_names = absolute_errors_df["Instrument"].unique()
 
-        # Compute MAE for each instrument and each timber trait
+        # Compute MAE for each instrument and each timbre trait
         mae_dict_per_instrument = {}
         for instrument in instrument_names:
             instrument_df = absolute_errors_df[absolute_errors_df["Instrument"] == instrument]

@@ -40,6 +40,16 @@ Download the [RWC Dataset](https://zenodo.org/records/17170844) and place it in 
   - `experiments/synthesizer_assessment/config.yaml`
 - Edit these files to customize the experiments.
 
+## Inference only
+The model checkpoint used in the paper is in the folder: `models/paper_checkpoint`. One can infer on audio files in a folder with the command:
+```bash
+python inference/scripts/main.py path/to/audios_folder
+```
+One can use its own model as soon as there are the timbre_mlp.pth file and the model_architecture.yaml file in the specified folder with the following command:
+```bash
+python inference/scripts/main.py path/to/audios_folder --model_save_folder path/to/model_folder
+```
+
 ## Experiments
 
 1. Process the RWC samples:
@@ -89,7 +99,7 @@ Download the [RWC Dataset](https://zenodo.org/records/17170844) and place it in 
     - Synthesis of the audio samples in `data/TokenSynth/Samples/{condition_type}_conditioned_synthesis/`.
     - Computing of the embeddings, saved in `data/TokenSynth/Embeddings/{condition_type}_conditioned/clap_embeddings/`.
     - Predictions, metrics and generated tables are saved in `experiments/synthesizer_assessment/results/`.
-    - Nearest and Furthest Neighbors of TokenSynth and RWC samples from the timber traits ground truth are copied in `experiments/synthesizer_assessment/results/`.
+    - Nearest and Furthest Neighbors of TokenSynth and RWC samples from the timbre traits ground truth are copied in `experiments/synthesizer_assessment/results/`.
 
 ## Reproducing Results
 To reproduce all results from the paper:
