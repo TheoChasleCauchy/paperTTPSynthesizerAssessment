@@ -1,6 +1,6 @@
-# Timbre Trait Prediction for Performance Analysis of Musical Sound Synthesizer using Deep Neural Embeddings
+# Predicting Timbre Traits for Interpretable Assessment of Musical Sound Synthesizers
 
-**Description**: Code repository for the paper "Timbre Trait Prediction for Performance Analysis of Musical Sound Synthesizer using Deep Neural Embeddings". This repository contains scripts to reproduce the experiments presented in the paper, the training of the timbre model and the assessment of the synthesizer.
+**Description**: Code repository for the paper "Predicting Timbre Traits for Interpretable Assessment of Musical Sound Synthesizers". This repository contains scripts to reproduce the experiments presented in the paper, the training of the timbre model and the assessment of the synthesizer.
 
 ## Setup
 
